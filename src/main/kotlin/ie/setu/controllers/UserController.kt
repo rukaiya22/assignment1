@@ -1,12 +1,22 @@
 package ie.setu.controllers
 
+import ie.setu.domain.User
 import ie.setu.domain.repository.UserDAO
-import io.javalin.http.Context
 
 class UserController {
     private val userDao = UserDAO()
 
-    fun getAllUsers(ctx: Context) {
-        ctx.json(userDao.getAll())
+    fun getAllUsers(): ArrayList<User> {
+        return userDao.getAll()
+    }
+
+    fun createUser(user: User): Int {
+        userDao.save(user)
+        return 201
+    }
+
+    fun deleteUser(userId: Int): Int {
+        userDao.delete(userId)
+        return 204
     }
 }
