@@ -8,6 +8,9 @@
   "paths": {
     "/api/users": {
       "get": {
+        "tags": [
+          "User API"
+        ],
         "summary": "Get all users of the application",
         "responses": {
           "200": {
@@ -15,16 +18,240 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "dummy"
-                    }
-                  }
+                  "$ref": "#/components/schemas/Users",
+                  "type": "array"
                 }
               }
             }
+          },
+          "400": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User API"
+        ],
+        "summary": "Add post body to save User",
+        "description": "Sending post body to save User",
+        "requestBody": {
+          "description": "Sending an User name and email",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "User is created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "delete": {
+        "tags": [
+          "User API"
+        ],
+        "summary": "Delete user and corresponding trackers by ID",
+        "description": "Deletes a user object and all related tracker objects based on the provided user ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the user and related trackers to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User and related Trackers deleted successfully"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/api/trackers/{userId}": {
+      "get": {
+        "tags": [
+          "Tracker API"
+        ],
+        "summary": "Get all health record trackings of a user of the application",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the user to fetch trackers."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve all Trakers of a user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Trackers",
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tracker API"
+        ],
+        "summary": "Delete a single Tracker by ID",
+        "description": "Deletes a a single Tracker object based on the provided ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the tracker to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tracker deleted successfully"
+          },
+          "404": {
+            "description": "Tracker not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "example": "Rukaiya"
+            },
+            "email": {
+              "type": "string",
+              "example": "rukaiya@gmail.com"
+            }
+          }
+      },
+      "Users": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "example": "Rukaiya"
+            },
+            "email": {
+              "type": "string",
+              "example": "rukaiya@gmail.com"
+            }
+          }
+        }
+      },
+      "Trackers": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "userId": {
+              "type": "integer",
+              "example": 1
+            },
+            "calories": {
+              "type": "float",
+              "example": 200.53
+            },
+            "drinking": {
+              "type": "float",
+              "example": 5.5
+            },
+            "walkingHours": {
+              "type": "float",
+              "example": 6.5
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error message": {
+            "type": "string",
+            "example": "Invalid input"
+          },
+          "error in user creation": {
+            "type": "string",
+            "example": "Duplicate email"
           }
         }
       }

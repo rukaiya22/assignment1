@@ -10,9 +10,11 @@ class UserController {
         return userDao.getAll()
     }
 
-    fun createUser(user: User): Int {
-        userDao.save(user)
-        return 201
+    fun createUser(user: User): User? {
+        val userId = userDao.save(user)
+        if (userId != null)
+            return user
+        return null
     }
 
     fun deleteUser(userId: Int): Int {

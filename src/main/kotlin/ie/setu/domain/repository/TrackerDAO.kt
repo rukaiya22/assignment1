@@ -36,9 +36,19 @@ class TrackerDAO {
         }
     }
 
-    fun deleteByUserId(userId: Int) {
+    fun findByUserId(userId: Int): ArrayList<Tracker>{
+        val trackerList: ArrayList<Tracker> = arrayListOf()
         transaction {
-            Trackers.deleteWhere { Trackers.userId eq userId }
+            Trackers.selectAll().where { Trackers.userId eq userId }.map {
+                trackerList.add(mapToTracker(it)) }
+        }
+        return trackerList
+    }
+
+    fun deleteByUserId(userId: Int) {
+        val trackerList: ArrayList<Tracker> = this.findByUserId(userId)
+        trackerList.forEach {
+            it -> this.delete(it.id)
         }
     }
 

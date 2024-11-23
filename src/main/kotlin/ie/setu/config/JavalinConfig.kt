@@ -34,7 +34,13 @@ class JavalinConfig {
         //adding new user
         app.post("api/users") { ctx ->
             val user = ctx.bodyAsClass(User::class.java)
-            ctx.json(userController.createUser(user))
+            if(userController.createUser(user)!= null){
+                ctx.json(user)
+                ctx.status(201)
+            }else{
+                ctx.result("User creation failed")
+                ctx.status(400)
+            }
         }
 
         //delete a user
