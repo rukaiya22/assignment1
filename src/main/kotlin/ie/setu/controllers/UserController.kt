@@ -10,6 +10,14 @@ class UserController {
         return userDao.getAll()
     }
 
+    fun getUserById(id: Int): User? {
+        return userDao.findById(id)
+    }
+
+    fun getUserByEmail(email: String): User? {
+        return userDao.findByEmail(email)
+    }
+
     fun createUser(user: User): User? {
         val userId = userDao.save(user)
         if (userId != null)

@@ -43,11 +43,38 @@ class JavalinConfig {
             }
         }
 
+        //get a user by id
+        app.get("/api/users/{id}") { ctx ->
+            val id = ctx.pathParamAsClass<Int>("id", Int::class.java).get()
+            var user = userController.getUserById(id)
+            if(user != null) {
+                ctx.json(user)
+                ctx.status(200)
+            }else{
+                ctx.status(404)
+            }
+        }
+
+        //get a user by email
+        app.get("/api/users/email/{email}") { ctx ->
+            val email = ctx.pathParamAsClass<String>("email", String::class.java).get()
+            var user = userController.getUserByEmail(email)
+            if(user != null) {
+                ctx.json(user)
+                ctx.status(200)
+            }else{
+                ctx.status(404)
+            }
+        }
+
+
         //delete a user
         app.delete("api/users/{user-id}") { ctx ->
             val userId = ctx.pathParamAsClass<Int>("user-id", Int::class.java).get()
-            if(trackerController.deleteTrackersByUserId(userId))
+            if(trackerController.deleteTrackersByUserId(userId)) {
                 ctx.json(userController.deleteUser(userId))
+                ctx.status(204)
+            }
             else
                 ctx.status(404)
         }
@@ -55,9 +82,14 @@ class JavalinConfig {
         //getting tracker by users
         app.get("api/trackers/{user-id}") { ctx ->
             val userId = ctx.pathParamAsClass<Int>("user-id", Int::class.java).get()
-            val trackers = trackerController.getAllTrackers()
-            val trackersToView = trackers.filter { it.userId == userId }
-            ctx.json(trackersToView)
+            val trackers = trackerController.getTrackersByUserId(userId)
+            if(trackers.size == 0) {
+                ctx.status(404)
+            }else{
+                ctx.json(trackers)
+                ctx.status(200)
+            }
+
         }
 
         //adding a tracker

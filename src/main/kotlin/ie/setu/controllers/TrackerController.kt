@@ -12,6 +12,10 @@ class TrackerController {
         return trackerDAO.getAll()
     }
 
+    fun getTrackersByUserId(userId: Int): ArrayList<Tracker> {
+        return trackerDAO.findByUserId(userId)
+    }
+
     fun createTracker(tracker: Tracker): Int {
         trackerDAO.save(tracker)
         return 201
