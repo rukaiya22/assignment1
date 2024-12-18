@@ -121,6 +121,17 @@
             <artifactId>unirest-objectmapper-jackson</artifactId>
             <version>4.2.9</version>
         </dependency>
+        <!-- adding Vue -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>vue</artifactId>
+            <version>3.5.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>axios</artifactId>
+            <version>1.7.7</version>
+        </dependency>
     </dependencies>
 
     <build>
