@@ -119,9 +119,18 @@ class JavalinConfig {
 
         // for vue front end
         app.get("/", VueComponent("<home-page></home-page>"))
-        app.get("/users", VueComponent("<user-overview></user-overview>"))
-        app.get("/users/{user-id}", VueComponent("<user-profile></user-profile>"))
-        app.get("/users/{user-id}/activities", VueComponent("<user-activity-overview></user-activity-overview>"))
+//        app.get("/users", VueComponent("<user-overview></user-overview>"))
+//        app.get("/users/{user-id}", VueComponent("<user-profile></user-profile>"))
+//        app.get("/users/{user-id}/activities", VueComponent("<user-activity-overview></user-activity-overview>"))
+
+        app.get("/users", VueComponent("<users></users>"))
+        app.get("/trackers", VueComponent("<trackers></trackers>"))
+        app.get("/diets", VueComponent("<diets></diets>"))
+        app.get("/exercises", VueComponent("<exercises></exercises>"))
+        app.get("/rests", VueComponent("<rests></rests>"))
+        app.get("/biometrics", VueComponent("<biometrics></biometrics>"))
+        app.get("/supplements", VueComponent("<supplements></supplements>"))
+        app.get("/appointments", VueComponent("<appointments></appointments>"))
 
 
 
