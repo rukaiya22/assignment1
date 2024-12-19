@@ -1,22 +1,28 @@
 <template id="users">
   <app-layout/>
-  <div>
-   <span class="row">
-    Name: <input v-model="name" /> Email:
-    <input v-model="email" />
-    <button @click="addUser">Add new users</button>
-   </span>
+  <div class="card bg-light mb-3">
+    <div class="card-header">
+      User Profile
+    </div>
+    <div class="card-body">
+      <label class="col-form-label">User Name: </label>
+      <input  class="form-control" v-model="name" />
+      <label class="col-form-label">Email: </label>
+      <input  class="form-control" v-model="email" />
+      <br/>
+      <button @click="addUser">Add new users</button>
+    </div>
   </div>
 <!--  <h2>All users</h2>-->
-  <div id="users">
+  <div>
     <div class="row"><br /></div>
-    <div class="row bg-primary">
+    <div class="row row-header col-form-label">
       <div class="col-md-1">Id</div>
       <div class="col-md-3">Name</div>
       <div class="col-md-5">Email</div>
       <div class="col-md-3">Action</div>
     </div>
-    <div class="row bg-success" v-for="user in users" :key="user.id">
+    <div class="row row-detail col-form-label" v-for="user in users" :key="user.id">
       <div class="col-md-1">{{user.id}}</div>
       <div class="col-md-3">{{user.name}}</div>
       <div class="col-md-5">{{user.email}}</div>
@@ -85,12 +91,5 @@ app.component("users", {
 </script>
 
 <style scoped>
-.bg-success{
-  color: yellow;
-}
-
-.bg-primary{
-  color: white;
-}
 
 </style>

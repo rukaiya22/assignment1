@@ -5,13 +5,13 @@
     <div class="row">
       <div class="col-md-5">
           <div class="row"><br /></div>
-          <div class="row bg-primary">
+          <div class="row row-header">
             <div class="col-md-1">Id</div>
             <div class="col-md-3">Name</div>
             <div class="col-md-5">Email</div>
             <div class="col-md-3">Action</div>
           </div>
-          <div class="row bg-success" v-for="user in users" :key="user.id">
+          <div class="row row-detail" v-for="user in users" :key="user.id">
             <div class="col-md-1">{{user.id}}</div>
             <div class="col-md-3">{{user.name}}</div>
             <div class="col-md-5">{{user.email}}</div>
@@ -24,13 +24,31 @@
         <br />
       </div>
       <div class="col-md-6">
-        <div class="row bg-primary" v-show="users.length !== 0 && userId!=null"><b>User Id: {{userId}}</b></div>
+        <div class="row row-header" v-show="users.length !== 0 && userId!=null"><b>User Id: {{userId}}</b></div>
         <div class="row"><br /></div>
-        <div class="row" v-show="users.length !== 0 && userId!=null">
-          Calories: <input v-model="calories" /> Walking:
-          <input v-model="walkHours" /> Drinking:
-          <input v-model="drinking" />
-          <button @click="addDetail()">Add tracking</button>
+<!--        <div class="row" v-show="users.length !== 0 && userId!=null">-->
+<!--          Calories: <input v-model="calories" /> Walking:-->
+<!--          <input v-model="walkHours" /> Drinking:-->
+<!--          <input v-model="drinking" />-->
+<!--          <button @click="addDetail()">Add tracking</button>-->
+<!--        </div>-->
+        <div class="card bg-light mb-3"  v-show="users.length !== 0 && userId!=null">
+          <div class="card-header">
+            Basic Information
+          </div>
+          <div class="card-body row" >
+            <div class="col-md-3"><label class="col-form-label">Calories:</label></div>
+            <div class="col-md-1"><input  v-model="calories" /></div>
+            <div class="col-md-8"></div>
+            <div class="col-md-3"><label class="col-form-label">Walking Hours: </label></div>
+            <div class="col-md-1"><input v-model="walkHours" /></div>
+            <div class="col-md-8"></div>
+            <div class="col-md-3"><label class="col-form-label">Drinking: </label></div>
+            <div class="col-md-1"><input v-model="drinking" /></div>
+            <div class="col-md-8"></div>
+            <div class="col-md-8"></div>
+            <div class="col-md-4"><button @click="addDetail()">Add Basic Info</button></div>
+          </div>
         </div>
         <div class="row"><br /></div>
         <div class="row" v-show="!showDetails">
@@ -38,14 +56,14 @@
           <span v-else>Please click view button for a user.</span>
         </div>
         <div class="row" v-show="showDetails">
-          <div class="row bg-danger">
+          <div class="row row-header2">
             <!-- <div class="col-md-1">Id</div> -->
             <div class="col-md-3">Calories</div>
             <div class="col-md-3">Walking</div>
             <div class="col-md-3">Drinking</div>
             <div class="col-md-2">Action</div>
           </div>
-          <div class="row bg-success" v-for="detail in details" :key="detail.id">
+          <div class="row row-detail2" v-for="detail in details" :key="detail.id">
             <!-- <div class="col-md-1">{{track.id}}</div> -->
             <div class="col-md-3">{{detail.calories}} K.Cal</div>
             <div class="col-md-3">{{detail.walkHours}} KM</div>
@@ -87,7 +105,7 @@ app.component("trackers", {
             this.userId = userId;
           })
           .catch(() => {
-            alert("Error while fetching trackers");
+            // alert("Error while fetching trackers");
             this.showDetails = false;
             this.userId = userId;
           });
@@ -137,3 +155,4 @@ app.component("trackers", {
   }
 });
 </script>
+
