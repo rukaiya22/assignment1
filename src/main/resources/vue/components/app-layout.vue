@@ -16,7 +16,25 @@
               <a class="nav-link" href="/users">Users</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/users/1/activities/">Activities</a>
+              <a class="nav-link" href="/trackers/">Basic Info</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/diets/">Diet</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/exercises/">Exercise</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/rests/">Rest (restorative activities)</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/biometrics /">Health Check (Biometrics )</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/supplements/">Dietary Supplements</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/appointments/">Appointments</a>
             </li>
           </ul>
         </div>
