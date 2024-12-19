@@ -43,11 +43,11 @@ app.component("users", {
           .catch(() => alert("Error while fetching users"));
     },
     addUser() {
-      if (this.name === "") {
+      if (this.name === "" || this.name == null) {
         alert("Name cannot be black");
         return;
       }
-      if (this.email === "") {
+      if (this.email === "" || this.email == null) {
         alert("Email cannot be black");
         return;
       }
@@ -66,6 +66,19 @@ app.component("users", {
           .catch((err) => {
             alert("There is an error, the user could not be saved.");
           });
+    },
+    deleteUser(id) {
+      fetch("/api/users/" + id, {
+        method: "DELETE",
+        cache: "no-store",
+      }).then((response) => {
+        if (response.status !== 404) {
+          alert("The item is deleted");
+          this.fetchUsers();
+        }
+      }).catch((err) => {
+        console.log("there is an error");
+      });
     }
   }
 });
