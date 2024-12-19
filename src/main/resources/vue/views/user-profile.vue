@@ -1,4 +1,5 @@
 <template id="user-profile">
+  <app-layout/>
   <div>
     <form v-if="user">
       <label class="col-form-label">User ID: </label>

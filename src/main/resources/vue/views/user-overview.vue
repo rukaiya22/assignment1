@@ -1,4 +1,5 @@
 <template id="user-overview">
+  <app-layout/>
   <div>
     <div>
       <ul class="user-overview-list">
