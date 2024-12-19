@@ -5,6 +5,8 @@ import ie.setu.controllers.UserController
 import ie.setu.domain.Tracker
 import ie.setu.domain.User
 import io.javalin.Javalin
+import io.javalin.json.JavalinJackson
+import io.javalin.vue.VueComponent
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -16,6 +18,8 @@ class JavalinConfig {
 
         val app = Javalin.create{
                 config -> config.staticFiles.add("/static")
+                config.staticFiles.enableWebjars()
+                config.vue.vueInstanceNameInJs = "app" // only required for Vue 3, is defined in layout.html
         }.apply {
             exception(Exception::class.java) { e, ctx -> e.printStackTrace() }
             error(404) { ctx -> ctx.json("404 - Not Found") }
@@ -112,5 +116,15 @@ class JavalinConfig {
             val swaggerContent = Files.readString(swaggerPath)
             ctx.contentType("application/json").result(swaggerContent)
         }
+
+        // for vue front end
+        app.get("/", VueComponent("<home-page></home-page>"))
+        app.get("/users", VueComponent("<user-overview></user-overview>"))
+        app.get("/users/{user-id}", VueComponent("<user-profile></user-profile>"))
+        app.get("/users/{user-id}/activities", VueComponent("<user-activity-overview></user-activity-overview>"))
+
+
+
+
     }
 }
