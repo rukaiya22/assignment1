@@ -16,7 +16,8 @@
             <div class="col-md-3">{{user.name}}</div>
             <div class="col-md-5">{{user.email}}</div>
             <div class="col-md-3">
-              <button @click="fetchDetails(`${user.id}`)">View</button>
+              <button rel="tooltip" title="View" @click="fetchDetails(`${user.id}`)">
+                <i class="fas fa-eye"  aria-hidden="true"></i></button>
             </div>
           </div>
       </div>
@@ -26,17 +27,12 @@
       <div class="col-md-6">
         <div class="row row-header" v-show="users.length !== 0 && userId!=null"><b>User Id: {{userId}}</b></div>
         <div class="row"><br /></div>
-<!--        <div class="row" v-show="users.length !== 0 && userId!=null">-->
-<!--          Calories: <input v-model="calories" /> Walking:-->
-<!--          <input v-model="walkHours" /> Drinking:-->
-<!--          <input v-model="drinking" />-->
-<!--          <button @click="addDetail()">Add tracking</button>-->
-<!--        </div>-->
         <div class="card bg-light mb-3"  v-show="users.length !== 0 && userId!=null">
           <div class="card-header">
             Basic Information
           </div>
           <div class="card-body row" >
+            <div class="card-header" v-show="id!=null"><i>Updating Basic Information with ID {{id}}</i></div>
             <div class="col-md-3"><label class="col-form-label">Calories:</label></div>
             <div class="col-md-1"><input  v-model="calories" /></div>
             <div class="col-md-8"></div>
@@ -46,8 +42,14 @@
             <div class="col-md-3"><label class="col-form-label">Drinking: </label></div>
             <div class="col-md-1"><input v-model="drinking" /></div>
             <div class="col-md-8"></div>
-            <div class="col-md-8"></div>
-            <div class="col-md-4"><button @click="addDetail()">Add Basic Info</button></div>
+            <div class="col-md-4"></div>
+            <div class="col-md-8">
+              <button rel="tooltip" title="Save" @click="addDetail()">
+              <i class="fas fa-save"  aria-hidden="true"></i></button>
+              &nbsp;
+              <button v-show="id!=null" rel="tooltip" title="Insert mode" @click="selectInsertMode()">
+                <i class="fas fa-add"  aria-hidden="true"></i></button>
+            </div>
           </div>
         </div>
         <div class="row"><br /></div>
@@ -69,7 +71,10 @@
             <div class="col-md-3">{{detail.walkHours}} KM</div>
             <div class="col-md-3">{{detail.drinking}} L</div>
             <div class="col-md-3">
-              <button @click="deleteDetail(`${detail.id}`)">Delete</button>
+              <button rel="tooltip" title="Edit" @click="updateDetail(detail)">
+                <i class="fas fa-pencil"  aria-hidden="true"></i></button> &nbsp;
+              <button rel="tooltip" title="Delete" @click="deleteDetail(`${detail.id}`)">
+                <i class="fas fa-trash"  aria-hidden="true"></i></button>
             </div>
           </div>
 
@@ -86,7 +91,11 @@ app.component("trackers", {
     users: [],
     details:[],
     showDetails: false,
-    userId: null
+    userId: null,
+    id: null,
+    calories: null,
+    walkHours: null,
+    drinking: null,
   }),
   created() {
     this.fetchUsers();
@@ -124,33 +133,70 @@ app.component("trackers", {
         console.log("there is an error");
       });
     },
-    addDetail() {
+    isInputValid: function () {
       if (this.calories === "" || this.calories == null) {
         alert("Calories cannot be black");
-        return;
+        return false;
       }
       if (this.walkHours === "" || this.walkHours == null) {
         alert("Walking cannot be black");
-        return;
+        return false;
       }
       if (this.drinking === "" || this.drinking == null) {
         alert("Drinking cannot be black");
-        return;
+        return false;
       }
-      fetch("/api/trackers", {
-        method: "POST",
-        cache: "no-store",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: this.userId, calories: this.calories, drinking: this.drinking, walkHours: this.walkHours }),
-      }).then((response) => {
-        alert(response.status);
-        this.fetchDetails(this.userId);
-      }).catch((err) => {
-        alert("There is an error, the tracker could not be saved.");
-      });
+      return true;
+    },
+    addDetail() {
+      if (!this.isInputValid()) return;
+      if(this.id == null) {
+        fetch("/api/trackers", {
+          method: "POST",
+          cache: "no-store",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: this.userId, calories: this.calories, drinking:
+            this.drinking, walkHours: this.walkHours }),
+        }).then((response) => {
+          alert(response.status);
+          this.fetchDetails(this.userId);
+          this.selectInsertMode();
+        }).catch((err) => {
+          alert("There is an error, the tracker could not be saved.");
+        });
+      } else {
+        fetch("/api/trackers", {
+          method: "PUT",
+          cache: "no-store",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id:this.id, userId: this.userId, calories: this.calories,
+            drinking: this.drinking, walkHours: this.walkHours }),
+        }).then((response) => {
+          alert(response.status);
+          this.fetchDetails(this.userId);
+          this.selectInsertMode();
+        }).catch((err) => {
+          alert("There is an error, the tracker could not be saved.");
+        });
+      }
 
+
+    },
+    updateDetail: function (detail) {
+      this.id = detail.id;
+      this.calories = detail.calories;
+      this.walkHours = detail.walkHours;
+      this.drinking = detail.drinking;
+    },
+    selectInsertMode: function () {
+      this.calories = null;
+      this.walkHours = null;
+      this.drinking = null;
+      this.id = null;
     }
   }
 });

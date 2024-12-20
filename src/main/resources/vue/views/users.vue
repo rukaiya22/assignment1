@@ -5,12 +5,16 @@
       User Profile
     </div>
     <div class="card-body">
+      <div class="card-header" v-show="id!=null"><i>Updating profile with ID {{id}}</i></div>
       <label class="col-form-label">User Name: </label>
       <input  class="form-control" v-model="name" />
       <label class="col-form-label">Email: </label>
       <input  class="form-control" v-model="email" />
       <br/>
-      <button @click="addUser">Add new users</button>
+      <button rel="tooltip" title="Save" @click="addUser">
+        <i class="fas fa-save"  aria-hidden="true"></i></button>&nbsp;
+      <button v-show="id!=null" rel="tooltip" title="Insert mode" @click="selectInsertMode()">
+        <i class="fas fa-add"  aria-hidden="true"></i></button>
     </div>
   </div>
 <!--  <h2>All users</h2>-->
@@ -27,8 +31,10 @@
       <div class="col-md-3">{{user.name}}</div>
       <div class="col-md-5">{{user.email}}</div>
       <div class="col-md-3">
-<!--        <button @click="viewUser(`${user.id}`)">View</button>-->
-        <button @click="deleteUser(`${user.id}`)">Delete</button>
+        <button rel="tooltip" title="Edit" @click="updateUser(user)">
+          <i class="fas fa-pencil"  aria-hidden="true"></i></button> &nbsp;
+        <button rel="tooltip" title="Delete" @click="deleteUser(`${user.id}`)">
+          <i class="fas fa-trash"  aria-hidden="true"></i></button>
       </div>
     </div>
   </div>
@@ -38,6 +44,9 @@ app.component("users", {
   template: "#users",
   data: () => ({
     users: [],
+    id: null,
+    name: null,
+    email: null
   }),
   created() {
     this.fetchUsers();
@@ -48,32 +57,54 @@ app.component("users", {
           .then(res => this.users = res.data)
           .catch(() => alert("Error while fetching users"));
     },
-    addUser() {
+    isInputValid: function () {
       if (this.name === "" || this.name == null) {
         alert("Name cannot be black");
-        return;
+        return false;
       }
       if (this.email === "" || this.email == null) {
         alert("Email cannot be black");
-        return;
+        return false;
       }
-      fetch("/api/users", {
-        method: "POST",
-        cache: "no-store",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: this.name, email: this.email }),
-      })
-          .then((response) => {
-            alert(response.status);
-            this.fetchUsers();
-          })
-          .catch((err) => {
-            alert("There is an error, the user could not be saved.");
-          });
+      return true;
     },
-    deleteUser(id) {
+    addUser: function () {
+      if (!this.isInputValid()) return;
+      if(this.id ==null){
+        fetch("/api/users", {
+          method: "POST",
+          cache: "no-store",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: this.name, email: this.email }),
+        }).then((response) => {
+          alert(response.status);
+          this.fetchUsers();
+          this.selectInsertMode();
+        }).catch((err) => {
+          alert("There is an error, the user could not be saved.");
+        });
+      } else {
+        fetch("/api/users", {
+          method: "PUT",
+          cache: "no-store",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: this.id, name: this.name, email: this.email }),
+        }).then((response) => {
+          this.id = null;
+          alert(response.status);
+          this.fetchUsers();
+          this.selectInsertMode();
+        }).catch((err) => {
+          alert("There is an error, the user could not be saved.");
+        });
+      }
+
+    },
+    deleteUser: function (id) {
       fetch("/api/users/" + id, {
         method: "DELETE",
         cache: "no-store",
@@ -85,6 +116,16 @@ app.component("users", {
       }).catch((err) => {
         console.log("there is an error");
       });
+    },
+    updateUser: function (user) {
+      this.id = user.id;
+      this.name = user.name;
+      this.email = user.email;
+    },
+    selectInsertMode: function () {
+      this.id = null;
+      this.name = null;
+      this.email = null;
     }
   }
 });
