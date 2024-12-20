@@ -1,5 +1,6 @@
 package ie.setu.repository
 
+import ie.setu.domain.User
 import ie.setu.domain.db.Users
 import ie.setu.domain.repository.UserDAO
 import ie.setu.helpers.nonExistingEmail
@@ -154,6 +155,28 @@ class UserDAOTest {
                 assertEquals(3, userDAO.getAll().size)
                 userDAO.delete(user3.id)
                 assertEquals(2, userDAO.getAll().size)
+            }
+        }
+    }
+
+    @Nested
+    inner class UpdateUsers {
+        @Test
+        fun `updating an existing user in table results`() {
+            transaction {
+
+                //Arrange - create and populate table with three users
+                val userDAO = populateUserTable()
+
+                //Act & Assert
+                assertEquals(3, userDAO.getAll().size)
+                val name = userDAO.findById(1)?.name
+                assertEquals(name, "Alice Wonderland")
+                val user = User(name = "Alice Wonderland2", email = "alice@wonderland.com", id = 1)
+                userDAO.update(1, user)
+                val name2 = userDAO.findById(1)?.name
+                assertEquals(name2, "Alice Wonderland2")
+                assertEquals(3, userDAO.getAll().size)
             }
         }
     }

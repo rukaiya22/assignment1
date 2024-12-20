@@ -25,6 +25,11 @@ class UserController {
         return null
     }
 
+    fun updateUser(user: User): Int {
+        userDao.update(user.id, user)
+        return 201
+    }
+
     fun deleteUser(userId: Int): Int {
         userDao.delete(userId)
         return 204
