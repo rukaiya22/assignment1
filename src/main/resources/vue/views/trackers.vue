@@ -120,7 +120,6 @@ app.component("trackers", {
           });
     },
     deleteDetail(id) {
-      alert(id);
       fetch("/api/trackers/" + id, {
         method: "DELETE",
         cache: "no-store",

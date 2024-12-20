@@ -73,7 +73,7 @@ class TrackerDAOTest {
     @Nested
     inner class CreateUsers {
         @Test
-        fun `multiple users added to table can be retrieved successfully`() {
+        fun `multiple tracker added to table can be retrieved successfully`() {
             transaction {
 
                 //Arrange - create and populate table with three users
@@ -82,7 +82,7 @@ class TrackerDAOTest {
                 //Act & Assert
                 assertEquals(10, trackerDao.getAll().size)
                 trackerDao.findByUserId(1).forEach({
-                    it -> assertEquals(user1.id, it.userId)
+                    it -> assertEquals(1, it.userId)
                 })
 
             }
@@ -92,15 +92,15 @@ class TrackerDAOTest {
     @Nested
     inner class DeleteUsers {
         @Test
-        fun `deleting a non-existant user in table results in no deletion`() {
+        fun `deleting a non-existant tracker in table results in no deletion`() {
             transaction {
 
                 //Arrange - create and populate table with three users
                 val (_, trackerDao) = populateUserTable()
                 //Act & Assert
                 assertEquals(10, trackerDao.getAll().size)
-                trackerDao.deleteByUserId(1)
-                assertEquals(6, trackerDao.getAll().size)
+                trackerDao.delete(11)
+                assertEquals(10, trackerDao.getAll().size)
             }
         }
 

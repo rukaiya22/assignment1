@@ -26,8 +26,4 @@ class TrackerController {
         return 204
     }
 
-    fun deleteTrackersByUserId(userId: Int): Boolean {
-        trackerDAO.deleteByUserId(userId)
-        return true
-    }
 }
