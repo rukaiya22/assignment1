@@ -59,5 +59,28 @@ app.component("app-layout", {template: "#app-layout"});
 .navbar {
   background-color: #e3f2fd;
 }
+
+.row-detail{
+  background-color: #aaffff;
+  font: italic 14px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+}
+
+.row-header{
+  background-color: #aaafff;;
+  font-weight: bold;
+}
+
+.row-header2{
+  background-color: #00ffff;
+
+  font-weight: bold;
+}
+
+.row-detail2{
+  background-color: #aaafff;
+  font: italic 14px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+}
 </style>
 
