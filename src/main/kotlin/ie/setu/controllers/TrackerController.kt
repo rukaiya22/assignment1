@@ -1,6 +1,7 @@
 package ie.setu.controllers
 
 import ie.setu.domain.Tracker
+import ie.setu.domain.User
 import ie.setu.domain.repository.TrackerDAO
 import org.jetbrains.exposed.sql.Op
 
@@ -18,6 +19,11 @@ class TrackerController {
 
     fun createTracker(tracker: Tracker): Int {
         trackerDAO.save(tracker)
+        return 201
+    }
+
+    fun updateTracker(tracker: Tracker): Int {
+        trackerDAO.update(tracker.id, tracker)
         return 201
     }
 

@@ -47,6 +47,18 @@ class JavalinConfig {
             }
         }
 
+        //updating a user
+        app.put("api/users") { ctx ->
+            val user = ctx.bodyAsClass(User::class.java)
+            if(userController.updateUser(user)!= null){
+                ctx.json(user)
+                ctx.status(201)
+            }else{
+                ctx.result("User creation failed")
+                ctx.status(400)
+            }
+        }
+
         //get a user by id
         app.get("/api/users/{id}") { ctx ->
             val id = ctx.pathParamAsClass<Int>("id", Int::class.java).get()
@@ -95,6 +107,18 @@ class JavalinConfig {
         app.post("api/trackers") { ctx ->
             val tracker = ctx.bodyAsClass(Tracker::class.java)
             ctx.json(trackerController.createTracker(tracker))
+        }
+
+        //updating a tracker
+        app.put("api/trackers") { ctx ->
+            val tracker = ctx.bodyAsClass(Tracker::class.java)
+            if(trackerController.updateTracker(tracker)!= null){
+                ctx.json(tracker)
+                ctx.status(201)
+            }else{
+                ctx.result("User creation failed")
+                ctx.status(400)
+            }
         }
 
         //delete a tracker

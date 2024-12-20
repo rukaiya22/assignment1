@@ -14,6 +14,7 @@ import kong.unirest.core.JsonNode
 import ie.setu.helpers.validEmail
 import ie.setu.helpers.validName
 import org.junit.jupiter.api.*
+import kotlin.test.assertNotEquals
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class HealthTrackerControllerTest {
@@ -60,6 +61,13 @@ class HealthTrackerControllerTest {
                 .asJson()
         }
 
+        //helper function to update a test user in the database
+        private fun updateUser (id: Int, name: String, email: String): HttpResponse<JsonNode> {
+            return Unirest.put(origin + "/api/users")
+                .body("{\"id\":$id,\"name\":\"$name\", \"email\":\"$email\"}")
+                .asJson()
+        }
+
         //helper function to delete a test user from the database
         private fun deleteUser (id: Int): HttpResponse<String> {
             return Unirest.delete(origin + "/api/users/$id").asString()
@@ -88,13 +96,47 @@ class HealthTrackerControllerTest {
             assertEquals(200, retrieveResponse.status)
 
             //Assert - verify the contents of the retrieved user
-            val retrievedUser : User = jsonToObject(addResponse.body.toString())
+            val retrievedUser : User = jsonToObject(retrieveResponse.body.toString())
             assertEquals(validEmail, retrievedUser.email)
             assertEquals(validName, retrievedUser.name)
 
             //After - restore the db to previous state by deleting the added user
             val deleteResponse = deleteUser(retrievedUser.id)
             assertEquals(204, deleteResponse.status)
+        }
+
+        @Test
+        fun `update a user with correct details returns a 201 response`() {
+
+            //Arrange & Act & Assert
+            //    add the user and verify return code (using fixture data)
+            val addResponse = addUser(validName, validEmail)
+            assertEquals(201, addResponse.status)
+
+            //Assert - retrieve the added user from the database and verify return code
+            val retrieveResponse= retrieveUserByEmail(validEmail)
+            assertEquals(200, retrieveResponse.status)
+
+            //Assert - verify the contents of the retrieved user
+            val retrievedUser : User = jsonToObject(retrieveResponse.body.toString())
+            assertEquals(validEmail, retrievedUser.email)
+            assertEquals(validName, retrievedUser.name)
+
+            //After - update the user email
+            val id = retrievedUser.id
+            val newEmail = "new_" + validEmail
+            val newName = "new_" + validName
+            val updateResponse = updateUser(id, newName, newEmail)
+            assertEquals(201, updateResponse.status)
+
+            //retrieve the updated user
+            val retrieveUpdateUserResponse= retrieveUserByEmail(newEmail)
+            assertEquals(200, retrieveUpdateUserResponse.status)
+
+            //Assert - verify the contents of the retrieved updated user
+            val retrievedUpdatedUser : User = jsonToObject(retrieveUpdateUserResponse.body.toString())
+            assertEquals(newEmail, retrievedUpdatedUser.email)
+            assertEquals(newName, retrievedUpdatedUser.name)
         }
 
     }
@@ -129,6 +171,13 @@ class HealthTrackerControllerTest {
                 .asJson()
         }
 
+        //helper function to update a test tracker to the database
+        private fun updateTracker (id: Int, userId: Int, calories: Double, drinking: Double, walkHours: Double): HttpResponse<JsonNode> {
+            return Unirest.put(origin + "/api/trackers")
+                .body("{\"id\":$id, \"userId\":$userId, \"calories\":$calories, \"drinking\":$drinking, \"walkHours\":$walkHours}")
+                .asJson()
+        }
+
         //helper function to delete a tracker user from the database
         private fun deleteTracker (id: Int): HttpResponse<String> {
             return Unirest.delete(origin + "/api/trackers/$id").asString()
@@ -136,7 +185,7 @@ class HealthTrackerControllerTest {
 
 
         @Test
-        fun `adding and deleting a tracker to for an existing user`() {
+        fun `adding and deleting a tracker for an existing user`() {
             val tracker1 : ArrayList<Tracker> = jsonToObject( Unirest.get(origin + "/api/trackers/1").asString().body.toString())
             var total_trackers = tracker1.size
             deleteTracker(1)
@@ -145,6 +194,20 @@ class HealthTrackerControllerTest {
             addTracker(1, 0.0, 0.0, 0.0)
             val tracker1_1 : ArrayList<Tracker> = jsonToObject( Unirest.get(origin + "/api/trackers/1").asString().body.toString())
             assertEquals(total_trackers, tracker1_1.size)
+        }
+
+        @Test
+        fun `adding and updating a tracker for an existing user`() {
+            val userId = 1
+            val trackers : ArrayList<Tracker> = jsonToObject( Unirest.get(origin + "/api/trackers/$userId").asString().body.toString())
+            val tracker = trackers[0]
+            val id = tracker.id
+            val oldcalories = tracker.calories
+            val newCalories = oldcalories+50
+            updateTracker(id, calories = newCalories, drinking = tracker.drinking, walkHours = tracker.walkHours, userId = userId)
+            val newTrackers : ArrayList<Tracker> = jsonToObject( Unirest.get(origin + "/api/trackers/$userId").asString().body.toString())
+            assertEquals(newTrackers[0].calories, newCalories)
+            assertNotEquals(newTrackers[0].calories,oldcalories)
         }
 
 

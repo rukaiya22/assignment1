@@ -1,5 +1,6 @@
 package ie.setu.repository
 
+import ie.setu.domain.Tracker
 import ie.setu.domain.User
 import ie.setu.domain.db.Trackers
 import ie.setu.domain.db.Users
@@ -90,12 +91,28 @@ class TrackerDAOTest {
     }
 
     @Nested
+    inner class UpdateTrackers {
+        @Test
+        fun `updating a existant user in table results`() {
+            transaction {
+                val (_, trackerDao) = populateUserTable()
+                //Act & Assert
+                val tracker = trackerDao.findByUserId(1)[0]
+                assertEquals(tracker.calories, 100.0)
+                val id = tracker.id
+                val newTracker = Tracker(userId = 1, calories = 150.0, drinking = 5.3, walkHours = 3.5, id = id)
+                trackerDao.update(id, newTracker)
+                val updateTracker = trackerDao.findByUserId(1)[0]
+                assertEquals(updateTracker.calories, 150.0)
+            }
+        }
+    }
+
+    @Nested
     inner class DeleteUsers {
         @Test
         fun `deleting a non-existant tracker in table results in no deletion`() {
             transaction {
-
-                //Arrange - create and populate table with three users
                 val (_, trackerDao) = populateUserTable()
                 //Act & Assert
                 assertEquals(10, trackerDao.getAll().size)

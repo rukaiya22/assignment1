@@ -60,7 +60,10 @@ class UserDAO {
 
     fun update(id: Int, user: User){
         transaction {
-            Users.update { Users.id eq id }
+            Users.update({ Users.id eq id }) {
+                it[name] = user.name
+                it[email] = user.email
+            }
         }
     }
 }
