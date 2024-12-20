@@ -26,7 +26,12 @@ object DatabaseHelper {
                    user_id INTEGER NOT NULL,
                    calories DOUBLE PRECISION NOT NULL,
                    drinking DOUBLE PRECISION NOT NULL,
-                   walk_hours DOUBLE PRECISION NOT NULL
+                   walk_hours DOUBLE PRECISION NOT NULL,
+
+                   CONSTRAINT fk_tracker_user_id
+                   FOREIGN KEY (user_id)
+                   REFERENCES users(id)
+                   ON DELETE CASCADE
                 );
                 """
             )

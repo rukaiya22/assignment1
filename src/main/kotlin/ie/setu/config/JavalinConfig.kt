@@ -75,12 +75,7 @@ class JavalinConfig {
         //delete a user
         app.delete("api/users/{user-id}") { ctx ->
             val userId = ctx.pathParamAsClass<Int>("user-id", Int::class.java).get()
-            if(trackerController.deleteTrackersByUserId(userId)) {
-                ctx.json(userController.deleteUser(userId))
-                ctx.status(204)
-            }
-            else
-                ctx.status(404)
+            ctx.status(userController.deleteUser(userId))
         }
 
         //getting tracker by users
@@ -105,7 +100,7 @@ class JavalinConfig {
         //delete a tracker
         app.delete("api/trackers/{tracker-id}") { ctx ->
             val trackerId = ctx.pathParamAsClass<Int>("tracker-id", Int::class.java).get()
-            ctx.json(trackerController.deletedTracker(trackerId))
+            ctx.status(trackerController.deletedTracker(trackerId))
         }
 
 
@@ -119,9 +114,6 @@ class JavalinConfig {
 
         // for vue front end
         app.get("/", VueComponent("<home-page></home-page>"))
-//        app.get("/users", VueComponent("<user-overview></user-overview>"))
-//        app.get("/users/{user-id}", VueComponent("<user-profile></user-profile>"))
-//        app.get("/users/{user-id}/activities", VueComponent("<user-activity-overview></user-activity-overview>"))
 
         app.get("/users", VueComponent("<users></users>"))
         app.get("/trackers", VueComponent("<trackers></trackers>"))

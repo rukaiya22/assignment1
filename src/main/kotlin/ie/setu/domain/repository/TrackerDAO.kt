@@ -45,11 +45,4 @@ class TrackerDAO {
         return trackerList
     }
 
-    fun deleteByUserId(userId: Int) {
-        val trackerList: ArrayList<Tracker> = this.findByUserId(userId)
-        trackerList.forEach {
-            it -> this.delete(it.id)
-        }
-    }
-
 }
