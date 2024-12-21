@@ -28,13 +28,13 @@
               <a class="nav-link" href="/rests/">Rest (restorative activities)</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/biometrics /">Health Check (Biometrics )</a>
+              <a class="nav-link" href="/biometrics/">Health Check (Biometrics )</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/supplements/">Dietary Supplements</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/appointments/">Appointments</a>
+              <a class="nav-link" href="/sports/">Sports</a>
             </li>
           </ul>
         </div>

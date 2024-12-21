@@ -6,7 +6,7 @@ import ie.setu.domain.Diet
 import ie.setu.domain.Exercise
 import ie.setu.domain.Rest
 import ie.setu.domain.Biometric
-import ie.setu.domain.Suppliment
+import ie.setu.domain.Supplement
 import ie.setu.domain.Sport
 
 val nonExistingEmail = "112233445566778testUser@xxxxx.xx"
@@ -105,20 +105,20 @@ val biometrics = arrayListOf<Biometric>(
 
 )
 
-val suppliments = arrayListOf<Suppliment>(
-    Suppliment(userId = 1, vitamin_d = 100.0, vitamin_c = 5.3, iron = 3.5, calcium = 3.5, id = 1),
-    Suppliment(userId = 1, vitamin_d = 80.0, vitamin_c = 6.3, iron = 0.2, calcium = 3.5, id = 2),
-    Suppliment(userId = 1, vitamin_d = 150.0, vitamin_c = 4.8, iron = 4.0, calcium = 3.5, id = 3),
-    Suppliment(userId = 1, vitamin_d = 185.0, vitamin_c = 3.5, iron = 3.2, calcium = 3.5, id = 4),
+val supplements = arrayListOf<Supplement>(
+    Supplement(userId = 1, vitamin_d = 100.0, vitamin_c = 5.3, iron = 3.5, calcium = 3.5, id = 1),
+    Supplement(userId = 1, vitamin_d = 80.0, vitamin_c = 6.3, iron = 0.2, calcium = 3.5, id = 2),
+    Supplement(userId = 1, vitamin_d = 150.0, vitamin_c = 4.8, iron = 4.0, calcium = 3.5, id = 3),
+    Supplement(userId = 1, vitamin_d = 185.0, vitamin_c = 3.5, iron = 3.2, calcium = 3.5, id = 4),
 
-    Suppliment(userId = 2, vitamin_d = 133.0, vitamin_c = 3.8, iron = 12.5, calcium = 3.5, id = 5),
-    Suppliment(userId = 2, vitamin_d = 122.0, vitamin_c = 7.5, iron = 5.6, calcium = 3.5, id = 6),
+    Supplement(userId = 2, vitamin_d = 133.0, vitamin_c = 3.8, iron = 12.5, calcium = 3.5, id = 5),
+    Supplement(userId = 2, vitamin_d = 122.0, vitamin_c = 7.5, iron = 5.6, calcium = 3.5, id = 6),
 
-    Suppliment(userId = 3, vitamin_d = 101.0, vitamin_c = 2.8, iron = 8.0, calcium = 3.5, id = 7),
-    Suppliment(userId = 3, vitamin_d = 105.0, vitamin_c = 3.5, iron = 6.2, calcium = 3.5, id = 8),
+    Supplement(userId = 3, vitamin_d = 101.0, vitamin_c = 2.8, iron = 8.0, calcium = 3.5, id = 7),
+    Supplement(userId = 3, vitamin_d = 105.0, vitamin_c = 3.5, iron = 6.2, calcium = 3.5, id = 8),
 
-    Suppliment(userId = 4, vitamin_d = 200.0, vitamin_c = 6.8, iron = 13.0, calcium = 3.5, id = 9),
-    Suppliment(userId = 4, vitamin_d = 205.0, vitamin_c = 6.5, iron = 5.2, calcium = 3.5, id = 10),
+    Supplement(userId = 4, vitamin_d = 200.0, vitamin_c = 6.8, iron = 13.0, calcium = 3.5, id = 9),
+    Supplement(userId = 4, vitamin_d = 205.0, vitamin_c = 6.5, iron = 5.2, calcium = 3.5, id = 10),
 
 )
 

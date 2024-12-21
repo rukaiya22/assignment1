@@ -1,6 +1,6 @@
 package ie.setu.domain
 
-data class Suppliment (
+data class Supplement (
     val id: Int = 0,
     val userId:Int = 0,
     val vitamin_d:Double = 0.0,

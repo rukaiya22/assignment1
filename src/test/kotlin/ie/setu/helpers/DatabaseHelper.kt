@@ -110,10 +110,10 @@ object DatabaseHelper {
                 """
             )
 
-            // Create the `suppliments` table
+            // Create the `supplements` table
             exec(
                 """
-                CREATE TABLE suppliments (
+                CREATE TABLE supplements (
                    id SERIAL PRIMARY KEY,
                    user_id INTEGER NOT NULL,
                    vitamin_d DOUBLE PRECISION NOT NULL,
@@ -225,10 +225,10 @@ object DatabaseHelper {
                 """
             )
 
-            // Insert test data into `suppliments` table
+            // Insert test data into `supplements` table
             exec(
                 """
-                INSERT INTO suppliments VALUES
+                INSERT INTO supplements VALUES
                 (1, 1, 100, 85, 6.2, 5),
                 (2, 1, 120, 66, 7.5, 7),
                 (3, 1, 50, 92, 9.8, 9),
@@ -263,7 +263,7 @@ object DatabaseHelper {
             exec("DROP TABLE IF EXISTS exercises;")
             exec("DROP TABLE IF EXISTS rests;")
             exec("DROP TABLE IF EXISTS biometrics;")
-            exec("DROP TABLE IF EXISTS suppliments;")
+            exec("DROP TABLE IF EXISTS supplements;")
             exec("DROP TABLE IF EXISTS sports;")
             exec("DROP TABLE IF EXISTS users;")
         }

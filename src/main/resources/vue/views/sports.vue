@@ -1,7 +1,7 @@
-<template id="diets">
+<template id="sports">
   <app-layout/>
   <div>
-    <h2 class="row">Diet</h2>
+    <h2 class="row">Sport</h2>
     <div class="row"><br /></div>
     <div class="row">
       <div class="col-md-5">
@@ -30,19 +30,28 @@
         <div class="row"><br /></div>
         <div class="card bg-light mb-3"  v-show="users.length !== 0 && userId!=null">
           <div class="card-header">
-            Diet Information
+            Sport Information
           </div>
           <div class="card-body row" >
-            <div class="card-header" v-show="id!=null"><i>Updating Diet Information with ID {{id}}</i></div>
-            <div class="col-md-3"><label class="col-form-label">Carbohydrate:</label></div>
-            <div class="col-md-1"><input  type="number" v-model.number="carbohydrate" /></div>
-            <div class="col-md-8"></div>
-            <div class="col-md-3"><label class="col-form-label">Protein: </label></div>
-            <div class="col-md-1"><input type="number" v-model.number="protein" /></div>
-            <div class="col-md-8"></div>
-            <div class="col-md-3"><label class="col-form-label">Fat: </label></div>
-            <div class="col-md-1"><input type="number" v-model.number="fat" /></div>
-            <div class="col-md-8"></div>
+            <div class="card-header" v-show="id!=null"><i>Updating Sport Information with ID {{id}}</i></div>
+            <div >
+              <div class="col-md-3"><label class="col-form-label">Sports_name:</label></div>
+<!--              <input v-model="sports_name" />-->
+              <div class="col-md-1">
+                <select v-model="sports_name">
+                  <option value="" disabled selected>Select your option</option>
+                  <option v-for="category in categories" :value=category>{{ category}}</option>
+                </select>
+              </div>
+              <div class="col-md-3"><label class="col-form-label">Playing_hours: </label></div>
+              <div class="col-md-1"><input type="number" v-model.number="playing_hours" /></div>
+              <div class="col-md-8"></div>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+              <div class="col-md-8"></div>
+            </div>
+
             <div class="col-md-4"></div>
             <div class="col-md-8">
               <button rel="tooltip" title="Save" @click="addDetail()">
@@ -55,23 +64,21 @@
         </div>
         <div class="row"><br /></div>
         <div class="row" v-show="!showDetails">
-          <span v-if="userId!=null"> No Diets for user id {{userId}}. Please add.</span>
+          <span v-if="userId!=null"> No Sports for user id {{userId}}. Please add.</span>
           <span v-else>Please click view button for a user.</span>
         </div>
         <div class="row" v-show="showDetails">
           <div class="row row-header2">
             <!-- <div class="col-md-1">Id</div> -->
-            <div class="col-md-3">Carbohydrate</div>
-            <div class="col-md-3">Protein</div>
-            <div class="col-md-3">Fat</div>
+            <div class="col-md-5">Sports_name</div>
+            <div class="col-md-5">Playing_hours</div>
             <div class="col-md-2">Action</div>
           </div>
           <div class="row row-detail2" v-for="detail in details" :key="detail.id">
             <!-- <div class="col-md-1">{{track.id}}</div> -->
-            <div class="col-md-3">{{detail.carbohydrate}} grams</div>
-            <div class="col-md-3">{{detail.protein}} grams</div>
-            <div class="col-md-3">{{detail.fat}} grams</div>
-            <div class="col-md-3">
+            <div class="col-md-5">{{detail.sports_name}}</div>
+            <div class="col-md-5">{{detail.playing_hours}} hours</div>
+            <div class="col-md-2">
               <button rel="tooltip" title="Edit" @click="updateDetail(detail)">
                 <i class="fas fa-pencil"  aria-hidden="true"></i></button> &nbsp;
               <button rel="tooltip" title="Delete" @click="deleteDetail(`${detail.id}`)">
@@ -86,17 +93,17 @@
 </template>
 
 <script>
-app.component("diets", {
-  template: "#diets",
+app.component("sports", {
+  template: "#sports",
   data: () => ({
     users: [],
     details:[],
     showDetails: false,
     userId: null,
     id: null,
-    carbohydrate: null,
-    protein: null,
-    fat: null,
+    sports_name: null,
+    playing_hours: null,
+    categories: ["hurling", "football", "cricket", "tennis"],
   }),
   created() {
     this.fetchUsers();
@@ -108,20 +115,20 @@ app.component("diets", {
           .catch(() => alert("Error while fetching users"));
     },
     fetchDetails(userId) {
-      axios.get("/api/diets/" + userId)
+      axios.get("/api/sports/" + userId)
           .then(res => {
             this.details = res.data;
             this.showDetails = true;
             this.userId = userId;
           })
           .catch(() => {
-            // alert("Error while fetching diets");
+            // alert("Error while fetching sports");
             this.showDetails = false;
             this.userId = userId;
           });
     },
     deleteDetail(id) {
-      fetch("/api/diets/" + id, {
+      fetch("/api/sports/" + id, {
         method: "DELETE",
         cache: "no-store",
       }).then((response) => {
@@ -134,14 +141,14 @@ app.component("diets", {
       });
     },
     isInputValid: function () {
-      if (this.carbohydrate == null || this.protein == null || this.fat == null ||
-          this.carbohydrate === "" || this.protein === "" || this.fat === "") {
-        alert("Carbohydrate, Protein and Fat cannot be black");
+      if (this.sports_name == null || this.playing_hours == null ||
+          this.sports_name === "" || this.playing_hours === "" ) {
+        alert("Sports_name and Playing_hours cannot be black");
         return false;
       }
 
-      if (this.carbohydrate < 0 || this.protein < 0 || this.fat <0 ) {
-        alert("Carbohydrate, Protein and Fat cannot be negative. \n Minimum value 0.0");
+      if (this.playing_hours < 0 ) {
+        alert("Sports_name and Playing_hours cannot be negative. \n Minimum value 0.0");
         return false;
       }
 
@@ -150,36 +157,34 @@ app.component("diets", {
     addDetail() {
       if (!this.isInputValid()) return;
       if(this.id == null) {
-        fetch("/api/diets", {
+        fetch("/api/sports", {
           method: "POST",
           cache: "no-store",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userId: this.userId, carbohydrate: this.carbohydrate, fat:
-            this.fat, protein: this.protein }),
+          body: JSON.stringify({ userId: this.userId, sports_name: this.sports_name, playing_hours: this.playing_hours }),
         }).then((response) => {
           alert(response.status);
           this.fetchDetails(this.userId);
           this.selectInsertMode();
         }).catch((err) => {
-          alert("There is an error, the diet could not be saved.");
+          alert("There is an error, the sport could not be saved.");
         });
       } else {
-        fetch("/api/diets", {
+        fetch("/api/sports", {
           method: "PUT",
           cache: "no-store",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ id:this.id, userId: this.userId, carbohydrate: this.carbohydrate,
-            fat: this.fat, protein: this.protein }),
+          body: JSON.stringify({ id:this.id, userId: this.userId, sports_name: this.sports_name, playing_hours: this.playing_hours }),
         }).then((response) => {
           alert(response.status);
           this.fetchDetails(this.userId);
           this.selectInsertMode();
         }).catch((err) => {
-          alert("There is an error, the diet could not be saved.");
+          alert("There is an error, the sport could not be saved.");
         });
       }
 
@@ -187,14 +192,12 @@ app.component("diets", {
     },
     updateDetail: function (detail) {
       this.id = detail.id;
-      this.carbohydrate = detail.carbohydrate;
-      this.protein = detail.protein;
-      this.fat = detail.fat;
+      this.sports_name = detail.sports_name;
+      this.playing_hours = detail.playing_hours;
     },
     selectInsertMode: function () {
-      this.carbohydrate = null;
-      this.protein = null;
-      this.fat = null;
+      this.sports_name = null;
+      this.playing_hours = null;
       this.id = null;
     }
   }

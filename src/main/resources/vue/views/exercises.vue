@@ -1,7 +1,7 @@
-<template id="diets">
+<template id="exercises">
   <app-layout/>
   <div>
-    <h2 class="row">Diet</h2>
+    <h2 class="row">Exercise</h2>
     <div class="row"><br /></div>
     <div class="row">
       <div class="col-md-5">
@@ -30,18 +30,21 @@
         <div class="row"><br /></div>
         <div class="card bg-light mb-3"  v-show="users.length !== 0 && userId!=null">
           <div class="card-header">
-            Diet Information
+            Exercise Information
           </div>
           <div class="card-body row" >
-            <div class="card-header" v-show="id!=null"><i>Updating Diet Information with ID {{id}}</i></div>
-            <div class="col-md-3"><label class="col-form-label">Carbohydrate:</label></div>
-            <div class="col-md-1"><input  type="number" v-model.number="carbohydrate" /></div>
+            <div class="card-header" v-show="id!=null"><i>Updating Exercise Information with ID {{id}}</i></div>
+            <div class="col-md-3"><label class="col-form-label">Running:</label></div>
+            <div class="col-md-1"><input  type="number" v-model.number="running" /></div>
             <div class="col-md-8"></div>
-            <div class="col-md-3"><label class="col-form-label">Protein: </label></div>
-            <div class="col-md-1"><input type="number" v-model.number="protein" /></div>
+            <div class="col-md-3"><label class="col-form-label">Swimming: </label></div>
+            <div class="col-md-1"><input type="number" v-model.number="swimming" /></div>
             <div class="col-md-8"></div>
-            <div class="col-md-3"><label class="col-form-label">Fat: </label></div>
-            <div class="col-md-1"><input type="number" v-model.number="fat" /></div>
+            <div class="col-md-3"><label class="col-form-label">Cycling: </label></div>
+            <div class="col-md-1"><input type="number" v-model.number="cycling" /></div>
+            <div class="col-md-8"></div>
+            <div class="col-md-3"><label class="col-form-label">Equipment_based:</label></div>
+            <div class="col-md-1"><input  type="number" v-model.number="equipment_based" /></div>
             <div class="col-md-8"></div>
             <div class="col-md-4"></div>
             <div class="col-md-8">
@@ -55,22 +58,24 @@
         </div>
         <div class="row"><br /></div>
         <div class="row" v-show="!showDetails">
-          <span v-if="userId!=null"> No Diets for user id {{userId}}. Please add.</span>
+          <span v-if="userId!=null"> No Exercises for user id {{userId}}. Please add.</span>
           <span v-else>Please click view button for a user.</span>
         </div>
         <div class="row" v-show="showDetails">
           <div class="row row-header2">
             <!-- <div class="col-md-1">Id</div> -->
-            <div class="col-md-3">Carbohydrate</div>
-            <div class="col-md-3">Protein</div>
-            <div class="col-md-3">Fat</div>
-            <div class="col-md-2">Action</div>
+            <div class="col-md-2">Running</div>
+            <div class="col-md-2">Swimming</div>
+            <div class="col-md-2">Cycling</div>
+            <div class="col-md-3">Equipment_based</div>
+            <div class="col-md-3">Action</div>
           </div>
           <div class="row row-detail2" v-for="detail in details" :key="detail.id">
             <!-- <div class="col-md-1">{{track.id}}</div> -->
-            <div class="col-md-3">{{detail.carbohydrate}} grams</div>
-            <div class="col-md-3">{{detail.protein}} grams</div>
-            <div class="col-md-3">{{detail.fat}} grams</div>
+            <div class="col-md-2">{{detail.running}} hours</div>
+            <div class="col-md-2">{{detail.swimming}} hours</div>
+            <div class="col-md-2">{{detail.cycling}} hours</div>
+            <div class="col-md-3">{{detail.equipment_based}} hours</div>
             <div class="col-md-3">
               <button rel="tooltip" title="Edit" @click="updateDetail(detail)">
                 <i class="fas fa-pencil"  aria-hidden="true"></i></button> &nbsp;
@@ -86,17 +91,18 @@
 </template>
 
 <script>
-app.component("diets", {
-  template: "#diets",
+app.component("exercises", {
+  template: "#exercises",
   data: () => ({
     users: [],
-    details:[],
+    details: [],
     showDetails: false,
     userId: null,
     id: null,
-    carbohydrate: null,
-    protein: null,
-    fat: null,
+    running: null,
+    swimming: null,
+    cycling: null,
+    equipment_based: null,
   }),
   created() {
     this.fetchUsers();
@@ -108,20 +114,20 @@ app.component("diets", {
           .catch(() => alert("Error while fetching users"));
     },
     fetchDetails(userId) {
-      axios.get("/api/diets/" + userId)
+      axios.get("/api/exercises/" + userId)
           .then(res => {
             this.details = res.data;
             this.showDetails = true;
             this.userId = userId;
           })
           .catch(() => {
-            // alert("Error while fetching diets");
+            // alert("Error while fetching exercises");
             this.showDetails = false;
             this.userId = userId;
           });
     },
     deleteDetail(id) {
-      fetch("/api/diets/" + id, {
+      fetch("/api/exercises/" + id, {
         method: "DELETE",
         cache: "no-store",
       }).then((response) => {
@@ -134,14 +140,14 @@ app.component("diets", {
       });
     },
     isInputValid: function () {
-      if (this.carbohydrate == null || this.protein == null || this.fat == null ||
-          this.carbohydrate === "" || this.protein === "" || this.fat === "") {
-        alert("Carbohydrate, Protein and Fat cannot be black");
+      if (this.running == null || this.swimming == null || this.cycling == null || this.equipment_based == null ||
+          this.running === "" || this.swimming === "" || this.cycling === "" || this.equipment_based === "") {
+        alert("Running, Swimming, Cycling and Equipment_based cannot be black");
         return false;
       }
 
-      if (this.carbohydrate < 0 || this.protein < 0 || this.fat <0 ) {
-        alert("Carbohydrate, Protein and Fat cannot be negative. \n Minimum value 0.0");
+      if (this.running < 0 || this.swimming < 0 || this.cycling < 0 || this.equipment_based < 0) {
+        alert("Running, Swimming, Cycling and Equipment_based cannot be negative. \n Minimum value 0.0");
         return false;
       }
 
@@ -149,37 +155,41 @@ app.component("diets", {
     },
     addDetail() {
       if (!this.isInputValid()) return;
-      if(this.id == null) {
-        fetch("/api/diets", {
+      if (this.id == null) {
+        fetch("/api/exercises", {
           method: "POST",
           cache: "no-store",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userId: this.userId, carbohydrate: this.carbohydrate, fat:
-            this.fat, protein: this.protein }),
+          body: JSON.stringify({
+            userId: this.userId, running: this.running, cycling:
+            this.cycling, swimming: this.swimming, equipment_based: this.equipment_based
+          }),
         }).then((response) => {
           alert(response.status);
           this.fetchDetails(this.userId);
           this.selectInsertMode();
         }).catch((err) => {
-          alert("There is an error, the diet could not be saved.");
+          alert("There is an error, the exercise could not be saved.");
         });
       } else {
-        fetch("/api/diets", {
+        fetch("/api/exercises", {
           method: "PUT",
           cache: "no-store",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ id:this.id, userId: this.userId, carbohydrate: this.carbohydrate,
-            fat: this.fat, protein: this.protein }),
+          body: JSON.stringify({
+            id: this.id, userId: this.userId, running: this.running,
+            cycling: this.cycling, swimming: this.swimming, equipment_based: this.equipment_based
+          }),
         }).then((response) => {
           alert(response.status);
           this.fetchDetails(this.userId);
           this.selectInsertMode();
         }).catch((err) => {
-          alert("There is an error, the diet could not be saved.");
+          alert("There is an error, the exercise could not be saved.");
         });
       }
 
@@ -187,14 +197,16 @@ app.component("diets", {
     },
     updateDetail: function (detail) {
       this.id = detail.id;
-      this.carbohydrate = detail.carbohydrate;
-      this.protein = detail.protein;
-      this.fat = detail.fat;
+      this.running = detail.running;
+      this.swimming = detail.swimming;
+      this.cycling = detail.cycling;
+      this.equipment_based = detail.equipment_based
     },
     selectInsertMode: function () {
-      this.carbohydrate = null;
-      this.protein = null;
-      this.fat = null;
+      this.running = null;
+      this.swimming = null;
+      this.cycling = null;
+      this.equipment_based = null;
       this.id = null;
     }
   }

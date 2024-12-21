@@ -1,7 +1,7 @@
-<template id="diets">
+<template id="rests">
   <app-layout/>
   <div>
-    <h2 class="row">Diet</h2>
+    <h2 class="row">Rest</h2>
     <div class="row"><br /></div>
     <div class="row">
       <div class="col-md-5">
@@ -30,18 +30,18 @@
         <div class="row"><br /></div>
         <div class="card bg-light mb-3"  v-show="users.length !== 0 && userId!=null">
           <div class="card-header">
-            Diet Information
+            Rest Information
           </div>
           <div class="card-body row" >
-            <div class="card-header" v-show="id!=null"><i>Updating Diet Information with ID {{id}}</i></div>
-            <div class="col-md-3"><label class="col-form-label">Carbohydrate:</label></div>
-            <div class="col-md-1"><input  type="number" v-model.number="carbohydrate" /></div>
+            <div class="card-header" v-show="id!=null"><i>Updating Rest Information with ID {{id}}</i></div>
+            <div class="col-md-3"><label class="col-form-label">Sleep:</label></div>
+            <div class="col-md-1"><input  type="number" v-model.number="sleep" /></div>
             <div class="col-md-8"></div>
-            <div class="col-md-3"><label class="col-form-label">Protein: </label></div>
-            <div class="col-md-1"><input type="number" v-model.number="protein" /></div>
+            <div class="col-md-3"><label class="col-form-label">Power_nap: </label></div>
+            <div class="col-md-1"><input type="number" v-model.number="power_nap" /></div>
             <div class="col-md-8"></div>
-            <div class="col-md-3"><label class="col-form-label">Fat: </label></div>
-            <div class="col-md-1"><input type="number" v-model.number="fat" /></div>
+            <div class="col-md-3"><label class="col-form-label">Meditation: </label></div>
+            <div class="col-md-1"><input type="number" v-model.number="meditation" /></div>
             <div class="col-md-8"></div>
             <div class="col-md-4"></div>
             <div class="col-md-8">
@@ -55,22 +55,22 @@
         </div>
         <div class="row"><br /></div>
         <div class="row" v-show="!showDetails">
-          <span v-if="userId!=null"> No Diets for user id {{userId}}. Please add.</span>
+          <span v-if="userId!=null"> No Rests for user id {{userId}}. Please add.</span>
           <span v-else>Please click view button for a user.</span>
         </div>
         <div class="row" v-show="showDetails">
           <div class="row row-header2">
             <!-- <div class="col-md-1">Id</div> -->
-            <div class="col-md-3">Carbohydrate</div>
-            <div class="col-md-3">Protein</div>
-            <div class="col-md-3">Fat</div>
+            <div class="col-md-3">Sleep</div>
+            <div class="col-md-3">Power_nap</div>
+            <div class="col-md-3">Meditation</div>
             <div class="col-md-2">Action</div>
           </div>
           <div class="row row-detail2" v-for="detail in details" :key="detail.id">
             <!-- <div class="col-md-1">{{track.id}}</div> -->
-            <div class="col-md-3">{{detail.carbohydrate}} grams</div>
-            <div class="col-md-3">{{detail.protein}} grams</div>
-            <div class="col-md-3">{{detail.fat}} grams</div>
+            <div class="col-md-3">{{detail.sleep}} hours</div>
+            <div class="col-md-3">{{detail.power_nap}} hours</div>
+            <div class="col-md-3">{{detail.meditation}} hours</div>
             <div class="col-md-3">
               <button rel="tooltip" title="Edit" @click="updateDetail(detail)">
                 <i class="fas fa-pencil"  aria-hidden="true"></i></button> &nbsp;
@@ -86,17 +86,17 @@
 </template>
 
 <script>
-app.component("diets", {
-  template: "#diets",
+app.component("rests", {
+  template: "#rests",
   data: () => ({
     users: [],
     details:[],
     showDetails: false,
     userId: null,
     id: null,
-    carbohydrate: null,
-    protein: null,
-    fat: null,
+    sleep: null,
+    power_nap: null,
+    meditation: null,
   }),
   created() {
     this.fetchUsers();
@@ -108,20 +108,20 @@ app.component("diets", {
           .catch(() => alert("Error while fetching users"));
     },
     fetchDetails(userId) {
-      axios.get("/api/diets/" + userId)
+      axios.get("/api/rests/" + userId)
           .then(res => {
             this.details = res.data;
             this.showDetails = true;
             this.userId = userId;
           })
           .catch(() => {
-            // alert("Error while fetching diets");
+            // alert("Error while fetching rests");
             this.showDetails = false;
             this.userId = userId;
           });
     },
     deleteDetail(id) {
-      fetch("/api/diets/" + id, {
+      fetch("/api/rests/" + id, {
         method: "DELETE",
         cache: "no-store",
       }).then((response) => {
@@ -134,14 +134,14 @@ app.component("diets", {
       });
     },
     isInputValid: function () {
-      if (this.carbohydrate == null || this.protein == null || this.fat == null ||
-          this.carbohydrate === "" || this.protein === "" || this.fat === "") {
-        alert("Carbohydrate, Protein and Fat cannot be black");
+      if (this.sleep == null || this.power_nap == null || this.meditation == null ||
+          this.sleep === "" || this.power_nap === "" || this.meditation === "") {
+        alert("Sleep, Power_nap and Meditation cannot be black");
         return false;
       }
 
-      if (this.carbohydrate < 0 || this.protein < 0 || this.fat <0 ) {
-        alert("Carbohydrate, Protein and Fat cannot be negative. \n Minimum value 0.0");
+      if (this.sleep < 0 || this.power_nap < 0 || this.meditation <0 ) {
+        alert("Sleep, Power_nap and Meditation cannot be negative. \n Minimum value 0.0");
         return false;
       }
 
@@ -150,36 +150,36 @@ app.component("diets", {
     addDetail() {
       if (!this.isInputValid()) return;
       if(this.id == null) {
-        fetch("/api/diets", {
+        fetch("/api/rests", {
           method: "POST",
           cache: "no-store",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userId: this.userId, carbohydrate: this.carbohydrate, fat:
-            this.fat, protein: this.protein }),
+          body: JSON.stringify({ userId: this.userId, sleep: this.sleep, meditation:
+            this.meditation, power_nap: this.power_nap }),
         }).then((response) => {
           alert(response.status);
           this.fetchDetails(this.userId);
           this.selectInsertMode();
         }).catch((err) => {
-          alert("There is an error, the diet could not be saved.");
+          alert("There is an error, the rest could not be saved.");
         });
       } else {
-        fetch("/api/diets", {
+        fetch("/api/rests", {
           method: "PUT",
           cache: "no-store",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ id:this.id, userId: this.userId, carbohydrate: this.carbohydrate,
-            fat: this.fat, protein: this.protein }),
+          body: JSON.stringify({ id:this.id, userId: this.userId, sleep: this.sleep,
+            meditation: this.meditation, power_nap: this.power_nap }),
         }).then((response) => {
           alert(response.status);
           this.fetchDetails(this.userId);
           this.selectInsertMode();
         }).catch((err) => {
-          alert("There is an error, the diet could not be saved.");
+          alert("There is an error, the rest could not be saved.");
         });
       }
 
@@ -187,14 +187,14 @@ app.component("diets", {
     },
     updateDetail: function (detail) {
       this.id = detail.id;
-      this.carbohydrate = detail.carbohydrate;
-      this.protein = detail.protein;
-      this.fat = detail.fat;
+      this.sleep = detail.sleep;
+      this.power_nap = detail.power_nap;
+      this.meditation = detail.meditation;
     },
     selectInsertMode: function () {
-      this.carbohydrate = null;
-      this.protein = null;
-      this.fat = null;
+      this.sleep = null;
+      this.power_nap = null;
+      this.meditation = null;
       this.id = null;
     }
   }

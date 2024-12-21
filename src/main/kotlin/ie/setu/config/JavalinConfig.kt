@@ -6,7 +6,7 @@ import ie.setu.controllers.DietController
 import ie.setu.controllers.ExerciseController
 import ie.setu.controllers.RestController
 import ie.setu.controllers.BiometricController
-import ie.setu.controllers.SupplimentController
+import ie.setu.controllers.SupplementController
 import ie.setu.controllers.SportController
 import ie.setu.domain.User
 import ie.setu.domain.Tracker
@@ -14,10 +14,9 @@ import ie.setu.domain.Diet
 import ie.setu.domain.Exercise
 import ie.setu.domain.Rest
 import ie.setu.domain.Biometric
-import ie.setu.domain.Suppliment
+import ie.setu.domain.Supplement
 import ie.setu.domain.Sport
 import io.javalin.Javalin
-import io.javalin.json.JavalinJackson
 import io.javalin.vue.VueComponent
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -29,7 +28,7 @@ class JavalinConfig {
     val exerciseController = ExerciseController()
     val restController = RestController()
     val biometricController = BiometricController()
-    val supplimentController = SupplimentController()
+    val supplementController = SupplementController()
     val sportController = SportController()
 
     fun startJavalinService(): Javalin {
@@ -301,31 +300,31 @@ class JavalinConfig {
             ctx.status(biometricController.deletedBiometric(biometricId))
         }
 
-        // ############ API for suppliments feature #######################
-        //getting suppliment by users
-        app.get("api/suppliments/{user-id}") { ctx ->
+        // ############ API for supplements feature #######################
+        //getting supplement by users
+        app.get("api/supplements/{user-id}") { ctx ->
             val userId = ctx.pathParamAsClass<Int>("user-id", Int::class.java).get()
-            val suppliments = supplimentController.getSupplimentsByUserId(userId)
-            if(suppliments.size == 0) {
+            val supplements = supplementController.getSupplementsByUserId(userId)
+            if(supplements.size == 0) {
                 ctx.status(404)
             }else{
-                ctx.json(suppliments)
+                ctx.json(supplements)
                 ctx.status(200)
             }
 
         }
 
-        //adding a suppliment
-        app.post("api/suppliments") { ctx ->
-            val suppliment = ctx.bodyAsClass(Suppliment::class.java)
-            ctx.json(supplimentController.createSuppliment(suppliment))
+        //adding a supplement
+        app.post("api/supplements") { ctx ->
+            val supplement = ctx.bodyAsClass(Supplement::class.java)
+            ctx.json(supplementController.createSupplement(supplement))
         }
 
-        //updating a suppliment
-        app.put("api/suppliments") { ctx ->
-            val suppliment = ctx.bodyAsClass(Suppliment::class.java)
-            if(supplimentController.updateSuppliment(suppliment)!= null){
-                ctx.json(suppliment)
+        //updating a supplement
+        app.put("api/supplements") { ctx ->
+            val supplement = ctx.bodyAsClass(Supplement::class.java)
+            if(supplementController.updateSupplement(supplement)!= null){
+                ctx.json(supplement)
                 ctx.status(201)
             }else{
                 ctx.result("User creation failed")
@@ -333,10 +332,10 @@ class JavalinConfig {
             }
         }
 
-        //delete a suppliment
-        app.delete("api/suppliments/{suppliment-id}") { ctx ->
-            val supplimentId = ctx.pathParamAsClass<Int>("suppliment-id", Int::class.java).get()
-            ctx.status(supplimentController.deletedSuppliment(supplimentId))
+        //delete a supplement
+        app.delete("api/supplements/{supplement-id}") { ctx ->
+            val supplementId = ctx.pathParamAsClass<Int>("supplement-id", Int::class.java).get()
+            ctx.status(supplementController.deletedSupplement(supplementId))
         }
 
         // ############ API for sports feature #######################
@@ -398,7 +397,7 @@ class JavalinConfig {
         app.get("/rests", VueComponent("<rests></rests>"))
         app.get("/biometrics", VueComponent("<biometrics></biometrics>"))
         app.get("/supplements", VueComponent("<supplements></supplements>"))
-        app.get("/appointments", VueComponent("<appointments></appointments>"))
+        app.get("/sports", VueComponent("<sports></sports>"))
 
 
 

@@ -1,6 +1,7 @@
 <template id="trackers">
   <app-layout/>
   <div>
+    <h2 class="row">Basic Info</h2>
     <div class="row"><br /></div>
     <div class="row">
       <div class="col-md-5">
@@ -34,13 +35,13 @@
           <div class="card-body row" >
             <div class="card-header" v-show="id!=null"><i>Updating Basic Information with ID {{id}}</i></div>
             <div class="col-md-3"><label class="col-form-label">Calories:</label></div>
-            <div class="col-md-1"><input  v-model="calories" /></div>
+            <div class="col-md-1"><input  type="number" v-model.number="calories" /></div>
             <div class="col-md-8"></div>
             <div class="col-md-3"><label class="col-form-label">Walking Hours: </label></div>
-            <div class="col-md-1"><input v-model="walkHours" /></div>
+            <div class="col-md-1"><input type="number" v-model.number="walkHours" /></div>
             <div class="col-md-8"></div>
             <div class="col-md-3"><label class="col-form-label">Drinking: </label></div>
-            <div class="col-md-1"><input v-model="drinking" /></div>
+            <div class="col-md-1"><input type="number" v-model.number="drinking" /></div>
             <div class="col-md-8"></div>
             <div class="col-md-4"></div>
             <div class="col-md-8">
@@ -133,18 +134,17 @@ app.component("trackers", {
       });
     },
     isInputValid: function () {
-      if (this.calories === "" || this.calories == null) {
-        alert("Calories cannot be black");
+      if (this.calories == null || this.walkHours == null || this.drinking == null ||
+          this.calories === "" || this.walkHours === "" || this.drinking === "") {
+        alert("Calories, Walking Hours and Drinking cannot be black");
         return false;
       }
-      if (this.walkHours === "" || this.walkHours == null) {
-        alert("Walking cannot be black");
+
+      if (this.calories < 0 || this.walkHours < 0 || this.drinking <0 ) {
+        alert("Calories, Walking Hours and Drinking cannot be negative. \n Minimum value 0.0");
         return false;
       }
-      if (this.drinking === "" || this.drinking == null) {
-        alert("Drinking cannot be black");
-        return false;
-      }
+
       return true;
     },
     addDetail() {

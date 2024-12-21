@@ -12,8 +12,8 @@ import ie.setu.domain.Rest
 import ie.setu.domain.db.Rests
 import ie.setu.domain.Biometric
 import ie.setu.domain.db.Biometrics
-import ie.setu.domain.Suppliment
-import ie.setu.domain.db.Suppliments
+import ie.setu.domain.Supplement
+import ie.setu.domain.db.Supplements
 import ie.setu.domain.Sport
 import ie.setu.domain.db.Sports
 
@@ -67,13 +67,13 @@ fun mapToBiometric(it: ResultRow) = Biometric(
     cholesterol = it[Biometrics.cholesterol]
 )
 
-fun mapToSuppliment(it: ResultRow) = Suppliment(
-    id = it[Suppliments.id],
-    userId = it[Suppliments.userId],
-    vitamin_d = it[Suppliments.vitamin_d],
-    vitamin_c = it[Suppliments.vitamin_c],
-    iron = it[Suppliments.iron],
-    calcium = it[Suppliments.calcium]
+fun mapToSupplement(it: ResultRow) = Supplement(
+    id = it[Supplements.id],
+    userId = it[Supplements.userId],
+    vitamin_d = it[Supplements.vitamin_d],
+    vitamin_c = it[Supplements.vitamin_c],
+    iron = it[Supplements.iron],
+    calcium = it[Supplements.calcium]
 )
 
 fun mapToSport(it: ResultRow) = Sport(

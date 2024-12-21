@@ -1,7 +1,7 @@
-<template id="diets">
+<template id="supplements">
   <app-layout/>
   <div>
-    <h2 class="row">Diet</h2>
+    <h2 class="row">Supplement</h2>
     <div class="row"><br /></div>
     <div class="row">
       <div class="col-md-5">
@@ -30,18 +30,21 @@
         <div class="row"><br /></div>
         <div class="card bg-light mb-3"  v-show="users.length !== 0 && userId!=null">
           <div class="card-header">
-            Diet Information
+            Supplement Information
           </div>
           <div class="card-body row" >
-            <div class="card-header" v-show="id!=null"><i>Updating Diet Information with ID {{id}}</i></div>
-            <div class="col-md-3"><label class="col-form-label">Carbohydrate:</label></div>
-            <div class="col-md-1"><input  type="number" v-model.number="carbohydrate" /></div>
+            <div class="card-header" v-show="id!=null"><i>Updating Supplement Information with ID {{id}}</i></div>
+            <div class="col-md-3"><label class="col-form-label">Vitamin_d:</label></div>
+            <div class="col-md-1"><input  type="number" v-model.number="vitamin_d" /></div>
             <div class="col-md-8"></div>
-            <div class="col-md-3"><label class="col-form-label">Protein: </label></div>
-            <div class="col-md-1"><input type="number" v-model.number="protein" /></div>
+            <div class="col-md-3"><label class="col-form-label">Vitamin_c: </label></div>
+            <div class="col-md-1"><input type="number" v-model.number="vitamin_c" /></div>
             <div class="col-md-8"></div>
-            <div class="col-md-3"><label class="col-form-label">Fat: </label></div>
-            <div class="col-md-1"><input type="number" v-model.number="fat" /></div>
+            <div class="col-md-3"><label class="col-form-label">Iron: </label></div>
+            <div class="col-md-1"><input type="number" v-model.number="iron" /></div>
+            <div class="col-md-8"></div>
+            <div class="col-md-3"><label class="col-form-label">Calcium:</label></div>
+            <div class="col-md-1"><input  type="number" v-model.number="calcium" /></div>
             <div class="col-md-8"></div>
             <div class="col-md-4"></div>
             <div class="col-md-8">
@@ -55,22 +58,24 @@
         </div>
         <div class="row"><br /></div>
         <div class="row" v-show="!showDetails">
-          <span v-if="userId!=null"> No Diets for user id {{userId}}. Please add.</span>
+          <span v-if="userId!=null"> No Supplements for user id {{userId}}. Please add.</span>
           <span v-else>Please click view button for a user.</span>
         </div>
         <div class="row" v-show="showDetails">
           <div class="row row-header2">
             <!-- <div class="col-md-1">Id</div> -->
-            <div class="col-md-3">Carbohydrate</div>
-            <div class="col-md-3">Protein</div>
-            <div class="col-md-3">Fat</div>
-            <div class="col-md-2">Action</div>
+            <div class="col-md-2">Vitamin_d</div>
+            <div class="col-md-2">Vitamin_c</div>
+            <div class="col-md-2">Iron</div>
+            <div class="col-md-3">Calcium</div>
+            <div class="col-md-3">Action</div>
           </div>
           <div class="row row-detail2" v-for="detail in details" :key="detail.id">
             <!-- <div class="col-md-1">{{track.id}}</div> -->
-            <div class="col-md-3">{{detail.carbohydrate}} grams</div>
-            <div class="col-md-3">{{detail.protein}} grams</div>
-            <div class="col-md-3">{{detail.fat}} grams</div>
+            <div class="col-md-2">{{detail.vitamin_d}} mg</div>
+            <div class="col-md-2">{{detail.vitamin_c}} mg</div>
+            <div class="col-md-2">{{detail.iron}} mg</div>
+            <div class="col-md-3">{{detail.calcium}} mg</div>
             <div class="col-md-3">
               <button rel="tooltip" title="Edit" @click="updateDetail(detail)">
                 <i class="fas fa-pencil"  aria-hidden="true"></i></button> &nbsp;
@@ -86,17 +91,18 @@
 </template>
 
 <script>
-app.component("diets", {
-  template: "#diets",
+app.component("supplements", {
+  template: "#supplements",
   data: () => ({
     users: [],
     details:[],
     showDetails: false,
     userId: null,
     id: null,
-    carbohydrate: null,
-    protein: null,
-    fat: null,
+    vitamin_d: null,
+    vitamin_c: null,
+    iron: null,
+    calcium: null,
   }),
   created() {
     this.fetchUsers();
@@ -108,20 +114,20 @@ app.component("diets", {
           .catch(() => alert("Error while fetching users"));
     },
     fetchDetails(userId) {
-      axios.get("/api/diets/" + userId)
+      axios.get("/api/supplements/" + userId)
           .then(res => {
             this.details = res.data;
             this.showDetails = true;
             this.userId = userId;
           })
           .catch(() => {
-            // alert("Error while fetching diets");
+            // alert("Error while fetching supplements");
             this.showDetails = false;
             this.userId = userId;
           });
     },
     deleteDetail(id) {
-      fetch("/api/diets/" + id, {
+      fetch("/api/supplements/" + id, {
         method: "DELETE",
         cache: "no-store",
       }).then((response) => {
@@ -134,14 +140,14 @@ app.component("diets", {
       });
     },
     isInputValid: function () {
-      if (this.carbohydrate == null || this.protein == null || this.fat == null ||
-          this.carbohydrate === "" || this.protein === "" || this.fat === "") {
-        alert("Carbohydrate, Protein and Fat cannot be black");
+      if (this.vitamin_d == null || this.vitamin_c == null || this.iron == null || this.calcium == null ||
+          this.vitamin_d === "" || this.vitamin_c === "" || this.iron === "" || this.calcium === "") {
+        alert("Vitamin_d, Vitamin_c, Iron and Calcium cannot be black");
         return false;
       }
 
-      if (this.carbohydrate < 0 || this.protein < 0 || this.fat <0 ) {
-        alert("Carbohydrate, Protein and Fat cannot be negative. \n Minimum value 0.0");
+      if (this.vitamin_d < 0 || this.vitamin_c < 0 || this.iron < 0 || this.calcium < 0) {
+        alert("Vitamin_d, Vitamin_c, Iron and Calcium cannot be negative. \n Minimum value 0.0");
         return false;
       }
 
@@ -150,36 +156,36 @@ app.component("diets", {
     addDetail() {
       if (!this.isInputValid()) return;
       if(this.id == null) {
-        fetch("/api/diets", {
+        fetch("/api/supplements", {
           method: "POST",
           cache: "no-store",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userId: this.userId, carbohydrate: this.carbohydrate, fat:
-            this.fat, protein: this.protein }),
+          body: JSON.stringify({ userId: this.userId, vitamin_d: this.vitamin_d, iron:
+            this.iron, vitamin_c: this.vitamin_c, calcium:this.calcium }),
         }).then((response) => {
           alert(response.status);
           this.fetchDetails(this.userId);
           this.selectInsertMode();
         }).catch((err) => {
-          alert("There is an error, the diet could not be saved.");
+          alert("There is an error, the supplement could not be saved.");
         });
       } else {
-        fetch("/api/diets", {
+        fetch("/api/supplements", {
           method: "PUT",
           cache: "no-store",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ id:this.id, userId: this.userId, carbohydrate: this.carbohydrate,
-            fat: this.fat, protein: this.protein }),
+          body: JSON.stringify({ id:this.id, userId: this.userId, vitamin_d: this.vitamin_d,
+            iron: this.iron, vitamin_c: this.vitamin_c, calcium: this.calcium }),
         }).then((response) => {
           alert(response.status);
           this.fetchDetails(this.userId);
           this.selectInsertMode();
         }).catch((err) => {
-          alert("There is an error, the diet could not be saved.");
+          alert("There is an error, the supplement could not be saved.");
         });
       }
 
@@ -187,14 +193,16 @@ app.component("diets", {
     },
     updateDetail: function (detail) {
       this.id = detail.id;
-      this.carbohydrate = detail.carbohydrate;
-      this.protein = detail.protein;
-      this.fat = detail.fat;
+      this.vitamin_d = detail.vitamin_d;
+      this.vitamin_c = detail.vitamin_c;
+      this.iron = detail.iron;
+      this.calcium = detail.calcium
     },
     selectInsertMode: function () {
-      this.carbohydrate = null;
-      this.protein = null;
-      this.fat = null;
+      this.vitamin_d = null;
+      this.vitamin_c = null;
+      this.iron = null;
+      this.calcium = null;
       this.id = null;
     }
   }

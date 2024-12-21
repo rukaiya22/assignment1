@@ -8,7 +8,7 @@ import ie.setu.domain.Diet
 import ie.setu.domain.Exercise
 import ie.setu.domain.Rest
 import ie.setu.domain.Biometric
-import ie.setu.domain.Suppliment
+import ie.setu.domain.Supplement
 import ie.setu.domain.Sport
 import ie.setu.domain.User
 import ie.setu.helpers.DatabaseHelper
@@ -508,72 +508,72 @@ class HealthTrackerControllerTest {
     }
 
     @Nested
-    inner class SupplimentAPI{
+    inner class SupplementAPI{
 
         @Test
-        fun `get a suppliments by  using a userId that exists in the database returns 200 `() {
-            val response = Unirest.get(origin + "/api/suppliments/1").asString()
+        fun `get a supplements by  using a userId that exists in the database returns 200 `() {
+            val response = Unirest.get(origin + "/api/supplements/1").asString()
             assertEquals(200, response.status)
 
         }
 
         @Test
-        fun `get suppliments by user id when user does not exist returns empty value suppliments and 404 response`() {
+        fun `get supplements by user id when user does not exist returns empty value supplements and 404 response`() {
 
             //Arrange - test data for user id
             val id = Integer.MIN_VALUE
 
             // Act - attempt to retrieve the non-existent user from the database
-            val retrieveResponse = Unirest.get(origin + "/api/suppliments/${id}").asString()
+            val retrieveResponse = Unirest.get(origin + "/api/supplements/${id}").asString()
 
             // Assert -  verify return code
             assertEquals(404, retrieveResponse.status)
         }
 
-        //helper function to add a test suppliment to the database
-        private fun addSuppliment (userId: Int, vitamin_d: Double, vitamin_c: Double, iron: Double, calcium: Double): HttpResponse<JsonNode> {
-            return Unirest.post(origin + "/api/suppliments")
+        //helper function to add a test supplement to the database
+        private fun addSupplement (userId: Int, vitamin_d: Double, vitamin_c: Double, iron: Double, calcium: Double): HttpResponse<JsonNode> {
+            return Unirest.post(origin + "/api/supplements")
                 .body("{\"userId\":$userId, \"vitamin_d\":$vitamin_d, \"vitamin_c\":$vitamin_c, \"iron\":$iron, \"calcium\":$calcium}")
                 .asJson()
         }
 
-        //helper function to update a test suppliment to the database
-        private fun updateSuppliment (id: Int, userId: Int, vitamin_d: Double, vitamin_c: Double, iron: Double, calcium: Double): HttpResponse<JsonNode> {
-            return Unirest.put(origin + "/api/suppliments")
+        //helper function to update a test supplement to the database
+        private fun updateSupplement (id: Int, userId: Int, vitamin_d: Double, vitamin_c: Double, iron: Double, calcium: Double): HttpResponse<JsonNode> {
+            return Unirest.put(origin + "/api/supplements")
                 .body("{\"id\":$id, \"userId\":$userId, \"vitamin_d\":$vitamin_d, \"vitamin_c\":$vitamin_c, \"iron\":$iron, \"calcium\":$calcium}")
                 .asJson()
         }
 
-        //helper function to delete a suppliment user from the database
-        private fun deleteSuppliment (id: Int): HttpResponse<String> {
-            return Unirest.delete(origin + "/api/suppliments/$id").asString()
+        //helper function to delete a supplement user from the database
+        private fun deleteSupplement (id: Int): HttpResponse<String> {
+            return Unirest.delete(origin + "/api/supplements/$id").asString()
         }
 
 
         @Test
-        fun `adding and deleting a suppliment for an existing user`() {
-            val suppliment1 : ArrayList<Suppliment> = jsonToObject( Unirest.get(origin + "/api/suppliments/1").asString().body.toString())
-            var total_suppliments = suppliment1.size
-            deleteSuppliment(1)
-            val suppliment1_2 : ArrayList<Suppliment> = jsonToObject( Unirest.get(origin + "/api/suppliments/1").asString().body.toString())
-            assertEquals(total_suppliments-1, suppliment1_2.size)
-            addSuppliment(1, 0.0, 0.0, 0.0, 0.0)
-            val suppliment1_1 : ArrayList<Suppliment> = jsonToObject( Unirest.get(origin + "/api/suppliments/1").asString().body.toString())
-            assertEquals(total_suppliments, suppliment1_1.size)
+        fun `adding and deleting a supplement for an existing user`() {
+            val supplement1 : ArrayList<Supplement> = jsonToObject( Unirest.get(origin + "/api/supplements/1").asString().body.toString())
+            var total_supplements = supplement1.size
+            deleteSupplement(1)
+            val supplement1_2 : ArrayList<Supplement> = jsonToObject( Unirest.get(origin + "/api/supplements/1").asString().body.toString())
+            assertEquals(total_supplements-1, supplement1_2.size)
+            addSupplement(1, 0.0, 0.0, 0.0, 0.0)
+            val supplement1_1 : ArrayList<Supplement> = jsonToObject( Unirest.get(origin + "/api/supplements/1").asString().body.toString())
+            assertEquals(total_supplements, supplement1_1.size)
         }
 
         @Test
-        fun `adding and updating a suppliment for an existing user`() {
+        fun `adding and updating a supplement for an existing user`() {
             val userId = 1
-            val suppliments : ArrayList<Suppliment> = jsonToObject( Unirest.get(origin + "/api/suppliments/$userId").asString().body.toString())
-            val suppliment = suppliments[0]
-            val id = suppliment.id
-            val oldvitamin_d = suppliment.vitamin_d
+            val supplements : ArrayList<Supplement> = jsonToObject( Unirest.get(origin + "/api/supplements/$userId").asString().body.toString())
+            val supplement = supplements[0]
+            val id = supplement.id
+            val oldvitamin_d = supplement.vitamin_d
             val newVitamin_d = oldvitamin_d+50
-            updateSuppliment(id, vitamin_d = newVitamin_d, vitamin_c = suppliment.vitamin_c, iron = suppliment.iron, calcium = suppliment.calcium, userId = userId)
-            val newSuppliments : ArrayList<Suppliment> = jsonToObject( Unirest.get(origin + "/api/suppliments/$userId").asString().body.toString())
-            assertEquals(newSuppliments[0].vitamin_d, newVitamin_d)
-            assertNotEquals(newSuppliments[0].vitamin_d,oldvitamin_d)
+            updateSupplement(id, vitamin_d = newVitamin_d, vitamin_c = supplement.vitamin_c, iron = supplement.iron, calcium = supplement.calcium, userId = userId)
+            val newSupplements : ArrayList<Supplement> = jsonToObject( Unirest.get(origin + "/api/supplements/$userId").asString().body.toString())
+            assertEquals(newSupplements[0].vitamin_d, newVitamin_d)
+            assertNotEquals(newSupplements[0].vitamin_d,oldvitamin_d)
         }
 
 
