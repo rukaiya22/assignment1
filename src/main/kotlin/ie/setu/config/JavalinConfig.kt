@@ -1,9 +1,21 @@
 package ie.setu.config
 
-import ie.setu.controllers.TrackerController
 import ie.setu.controllers.UserController
-import ie.setu.domain.Tracker
+import ie.setu.controllers.TrackerController
+import ie.setu.controllers.DietController
+import ie.setu.controllers.ExerciseController
+import ie.setu.controllers.RestController
+import ie.setu.controllers.BiometricController
+import ie.setu.controllers.SupplimentController
+import ie.setu.controllers.SportController
 import ie.setu.domain.User
+import ie.setu.domain.Tracker
+import ie.setu.domain.Diet
+import ie.setu.domain.Exercise
+import ie.setu.domain.Rest
+import ie.setu.domain.Biometric
+import ie.setu.domain.Suppliment
+import ie.setu.domain.Sport
 import io.javalin.Javalin
 import io.javalin.json.JavalinJackson
 import io.javalin.vue.VueComponent
@@ -13,6 +25,12 @@ import java.nio.file.Paths
 class JavalinConfig {
     val userController = UserController()
     val trackerController = TrackerController()
+    val dietController = DietController()
+    val exerciseController = ExerciseController()
+    val restController = RestController()
+    val biometricController = BiometricController()
+    val supplimentController = SupplimentController()
+    val sportController = SportController()
 
     fun startJavalinService(): Javalin {
 
@@ -30,6 +48,8 @@ class JavalinConfig {
     }
 
     private fun registerRoutes(app: Javalin) {
+
+        // ############ API for users feature #######################
         // Getting all users. Inject DAO into the controller
         app.get("/api/users") { ctx ->
             ctx.json(userController.getAllUsers())
@@ -90,6 +110,7 @@ class JavalinConfig {
             ctx.status(userController.deleteUser(userId))
         }
 
+        // ############ API for trackers feature #######################
         //getting tracker by users
         app.get("api/trackers/{user-id}") { ctx ->
             val userId = ctx.pathParamAsClass<Int>("user-id", Int::class.java).get()
@@ -126,6 +147,237 @@ class JavalinConfig {
             val trackerId = ctx.pathParamAsClass<Int>("tracker-id", Int::class.java).get()
             ctx.status(trackerController.deletedTracker(trackerId))
         }
+
+        // ############ API for diets feature #######################
+        //getting diet by users
+        app.get("api/diets/{user-id}") { ctx ->
+            val userId = ctx.pathParamAsClass<Int>("user-id", Int::class.java).get()
+            val diets = dietController.getDietsByUserId(userId)
+            if(diets.size == 0) {
+                ctx.status(404)
+            }else{
+                ctx.json(diets)
+                ctx.status(200)
+            }
+
+        }
+
+        //adding a diet
+        app.post("api/diets") { ctx ->
+            val diet = ctx.bodyAsClass(Diet::class.java)
+            ctx.json(dietController.createDiet(diet))
+        }
+
+        //updating a diet
+        app.put("api/diets") { ctx ->
+            val diet = ctx.bodyAsClass(Diet::class.java)
+            if(dietController.updateDiet(diet)!= null){
+                ctx.json(diet)
+                ctx.status(201)
+            }else{
+                ctx.result("User creation failed")
+                ctx.status(400)
+            }
+        }
+
+        //delete a diet
+        app.delete("api/diets/{diet-id}") { ctx ->
+            val dietId = ctx.pathParamAsClass<Int>("diet-id", Int::class.java).get()
+            ctx.status(dietController.deletedDiet(dietId))
+        }
+
+        // ############ API for exercises feature #######################
+        //getting exercise by users
+        app.get("api/exercises/{user-id}") { ctx ->
+            val userId = ctx.pathParamAsClass<Int>("user-id", Int::class.java).get()
+            val exercises = exerciseController.getExercisesByUserId(userId)
+            if(exercises.size == 0) {
+                ctx.status(404)
+            }else{
+                ctx.json(exercises)
+                ctx.status(200)
+            }
+
+        }
+
+        //adding a exercise
+        app.post("api/exercises") { ctx ->
+            val exercise = ctx.bodyAsClass(Exercise::class.java)
+            ctx.json(exerciseController.createExercise(exercise))
+        }
+
+        //updating a exercise
+        app.put("api/exercises") { ctx ->
+            val exercise = ctx.bodyAsClass(Exercise::class.java)
+            if(exerciseController.updateExercise(exercise)!= null){
+                ctx.json(exercise)
+                ctx.status(201)
+            }else{
+                ctx.result("User creation failed")
+                ctx.status(400)
+            }
+        }
+
+        //delete a exercise
+        app.delete("api/exercises/{exercise-id}") { ctx ->
+            val exerciseId = ctx.pathParamAsClass<Int>("exercise-id", Int::class.java).get()
+            ctx.status(exerciseController.deletedExercise(exerciseId))
+        }
+
+
+        // ############ API for rests feature #######################
+        //getting rest by users
+        app.get("api/rests/{user-id}") { ctx ->
+            val userId = ctx.pathParamAsClass<Int>("user-id", Int::class.java).get()
+            val rests = restController.getRestsByUserId(userId)
+            if(rests.size == 0) {
+                ctx.status(404)
+            }else{
+                ctx.json(rests)
+                ctx.status(200)
+            }
+
+        }
+
+        //adding a rest
+        app.post("api/rests") { ctx ->
+            val rest = ctx.bodyAsClass(Rest::class.java)
+            ctx.json(restController.createRest(rest))
+        }
+
+        //updating a rest
+        app.put("api/rests") { ctx ->
+            val rest = ctx.bodyAsClass(Rest::class.java)
+            if(restController.updateRest(rest)!= null){
+                ctx.json(rest)
+                ctx.status(201)
+            }else{
+                ctx.result("User creation failed")
+                ctx.status(400)
+            }
+        }
+
+        //delete a rest
+        app.delete("api/rests/{rest-id}") { ctx ->
+            val restId = ctx.pathParamAsClass<Int>("rest-id", Int::class.java).get()
+            ctx.status(restController.deletedRest(restId))
+        }
+
+        // ############ API for biometrics feature #######################
+        //getting biometric by users
+        app.get("api/biometrics/{user-id}") { ctx ->
+            val userId = ctx.pathParamAsClass<Int>("user-id", Int::class.java).get()
+            val biometrics = biometricController.getBiometricsByUserId(userId)
+            if(biometrics.size == 0) {
+                ctx.status(404)
+            }else{
+                ctx.json(biometrics)
+                ctx.status(200)
+            }
+
+        }
+
+        //adding a biometric
+        app.post("api/biometrics") { ctx ->
+            val biometric = ctx.bodyAsClass(Biometric::class.java)
+            ctx.json(biometricController.createBiometric(biometric))
+        }
+
+        //updating a biometric
+        app.put("api/biometrics") { ctx ->
+            val biometric = ctx.bodyAsClass(Biometric::class.java)
+            if(biometricController.updateBiometric(biometric)!= null){
+                ctx.json(biometric)
+                ctx.status(201)
+            }else{
+                ctx.result("User creation failed")
+                ctx.status(400)
+            }
+        }
+
+        //delete a biometric
+        app.delete("api/biometrics/{biometric-id}") { ctx ->
+            val biometricId = ctx.pathParamAsClass<Int>("biometric-id", Int::class.java).get()
+            ctx.status(biometricController.deletedBiometric(biometricId))
+        }
+
+        // ############ API for suppliments feature #######################
+        //getting suppliment by users
+        app.get("api/suppliments/{user-id}") { ctx ->
+            val userId = ctx.pathParamAsClass<Int>("user-id", Int::class.java).get()
+            val suppliments = supplimentController.getSupplimentsByUserId(userId)
+            if(suppliments.size == 0) {
+                ctx.status(404)
+            }else{
+                ctx.json(suppliments)
+                ctx.status(200)
+            }
+
+        }
+
+        //adding a suppliment
+        app.post("api/suppliments") { ctx ->
+            val suppliment = ctx.bodyAsClass(Suppliment::class.java)
+            ctx.json(supplimentController.createSuppliment(suppliment))
+        }
+
+        //updating a suppliment
+        app.put("api/suppliments") { ctx ->
+            val suppliment = ctx.bodyAsClass(Suppliment::class.java)
+            if(supplimentController.updateSuppliment(suppliment)!= null){
+                ctx.json(suppliment)
+                ctx.status(201)
+            }else{
+                ctx.result("User creation failed")
+                ctx.status(400)
+            }
+        }
+
+        //delete a suppliment
+        app.delete("api/suppliments/{suppliment-id}") { ctx ->
+            val supplimentId = ctx.pathParamAsClass<Int>("suppliment-id", Int::class.java).get()
+            ctx.status(supplimentController.deletedSuppliment(supplimentId))
+        }
+
+        // ############ API for sports feature #######################
+//getting sport by users
+        app.get("api/sports/{user-id}") { ctx ->
+            val userId = ctx.pathParamAsClass<Int>("user-id", Int::class.java).get()
+            val sports = sportController.getSportsByUserId(userId)
+            if(sports.size == 0) {
+                ctx.status(404)
+            }else{
+                ctx.json(sports)
+                ctx.status(200)
+            }
+
+        }
+
+        //adding a sport
+        app.post("api/sports") { ctx ->
+            val sport = ctx.bodyAsClass(Sport::class.java)
+            ctx.json(sportController.createSport(sport))
+        }
+
+        //updating a sport
+        app.put("api/sports") { ctx ->
+            val sport = ctx.bodyAsClass(Sport::class.java)
+            if(sportController.updateSport(sport)!= null){
+                ctx.json(sport)
+                ctx.status(201)
+            }else{
+                ctx.result("User creation failed")
+                ctx.status(400)
+            }
+        }
+
+        //delete a sport
+        app.delete("api/sports/{sport-id}") { ctx ->
+            val sportId = ctx.pathParamAsClass<Int>("sport-id", Int::class.java).get()
+            ctx.status(sportController.deletedSport(sportId))
+        }
+
+
 
 
 
