@@ -258,7 +258,6 @@ object DatabaseHelper {
 
     fun cleanupTestDatabase(db: Database) {
         transaction(db) {
-            exec("DROP TABLE IF EXISTS users;")
             exec("DROP TABLE IF EXISTS trackers;")
             exec("DROP TABLE IF EXISTS diets;")
             exec("DROP TABLE IF EXISTS exercises;")
@@ -266,6 +265,7 @@ object DatabaseHelper {
             exec("DROP TABLE IF EXISTS biometrics;")
             exec("DROP TABLE IF EXISTS suppliments;")
             exec("DROP TABLE IF EXISTS sports;")
+            exec("DROP TABLE IF EXISTS users;")
         }
     }
 }
