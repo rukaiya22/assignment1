@@ -1,9 +1,7 @@
 package ie.setu.domain.repository
 
 import ie.setu.domain.Tracker
-import ie.setu.domain.User
 import ie.setu.domain.db.Trackers
-import ie.setu.domain.db.Users
 import ie.setu.utils.mapToTracker
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
@@ -33,6 +31,16 @@ class TrackerDAO {
         }
     }
 
+    fun update(id: Int, tracker: Tracker){
+        transaction {
+            Trackers.update({ Trackers.id eq id }) {
+                it[calories] = tracker.calories
+                it[drinking] = tracker.drinking
+                it[walkHours] = tracker.walkHours
+            }
+        }
+    }
+
     fun delete(id: Int) {
         transaction {
             Trackers.deleteWhere { Trackers.id eq id }
@@ -46,16 +54,6 @@ class TrackerDAO {
                 trackerList.add(mapToTracker(it)) }
         }
         return trackerList
-    }
-
-    fun update(id: Int, tracker: Tracker){
-        transaction {
-            Trackers.update({ Trackers.id eq id }) {
-                it[calories] = tracker.calories
-                it[drinking] = tracker.drinking
-                it[walkHours] = tracker.walkHours
-            }
-        }
     }
 
 }
