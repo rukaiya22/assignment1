@@ -135,7 +135,7 @@ object DatabaseHelper {
                 CREATE TABLE sports (
                    id SERIAL PRIMARY KEY,
                    user_id INTEGER NOT NULL,
-                   sports_name DOUBLE PRECISION NOT NULL,
+                   sports_name VARCHAR (100) NOT NULL,
                    playing_hours DOUBLE PRECISION NOT NULL,
 
                    CONSTRAINT fk_sport_user_id
@@ -243,13 +243,13 @@ object DatabaseHelper {
             exec(
                 """
                 INSERT INTO sports VALUES
-                (1, 1, "cricket", 2),
-                (2, 1, "football", 0.5),
-                (3, 1, "tennis", 3),
-                (4, 2, "cricket", 0.2),
-                (5, 2, "football", 0.1),
-                (6, 2, "hurling", 0.8),
-                (7, 2, "tennis", 0.5);
+                (1, 1, 'cricket', 2),
+                (2, 1, 'football', 0.5),
+                (3, 1, 'tennis', 3),
+                (4, 2, 'cricket', 0.2),
+                (5, 2, 'football', 0.1),
+                (6, 2, 'hurling', 0.8),
+                (7, 2, 'tennis', 0.5);
                 """
             )
 
@@ -263,7 +263,7 @@ object DatabaseHelper {
             exec("DROP TABLE IF EXISTS diets;")
             exec("DROP TABLE IF EXISTS exercises;")
             exec("DROP TABLE IF EXISTS rests;")
-            exec("DROP TABLE IF EXISTS swimming;")
+            exec("DROP TABLE IF EXISTS biometrics;")
             exec("DROP TABLE IF EXISTS suppliments;")
             exec("DROP TABLE IF EXISTS sports;")
         }
