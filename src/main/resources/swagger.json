@@ -75,6 +75,87 @@
             }
           }
         }
+      },
+      "put": {
+        "tags": [
+          "User API"
+        ],
+        "summary": "Update an existing User",
+        "description": "Sending put body to update the User",
+        "requestBody": {
+          "description": "Sending updated User name and email",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "User is updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/email/{email}": {
+      "get": {
+        "tags": [
+          "User API"
+        ],
+        "summary": "Get a users of the application",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "email",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The email of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/users/{id}": {
@@ -100,8 +181,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User",
-                  "type": "array"
+                  "$ref": "#/components/schemas/User"
                 }
               }
             }
@@ -145,48 +225,6 @@
         }
       }
     },
-    "/api/users/email/{email}": {
-      "get": {
-        "tags": [
-          "User API"
-        ],
-        "summary": "Get a users of the application",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "email",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "The email of the user"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A single user",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User",
-                  "type": "array"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "No data found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/trackers/{userId}": {
       "get": {
         "tags": [
@@ -210,8 +248,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Trackers",
-                  "type": "array"
+                  "$ref": "#/components/schemas/Trackers"
                 }
               }
             }
@@ -227,7 +264,91 @@
             }
           }
         }
+      }
+    },
+    "/api/trackers/": {
+      "post": {
+        "tags": [
+          "Tracker API"
+        ],
+        "summary": "Add a new tracker",
+        "description": "Sending post body to create a Tracker",
+        "requestBody": {
+          "description": "Sending calories walkingHours drinking to create Tracker",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Tracker"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "Tracker is created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tracker"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
       },
+      "put": {
+        "tags": [
+          "Tracker API"
+        ],
+        "summary": "Update an existing tracker",
+        "description": "Sending post body to update an existing Tracker",
+        "requestBody": {
+          "description": "Sending updated calories walkingHours drinking of a Tracker",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Tracker"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "Tracker is updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tracker"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trackers/{trackerId}": {
       "delete": {
         "tags": [
           "Tracker API"
@@ -237,7 +358,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "userId",
+            "name": "trackerId",
             "required": true,
             "schema": {
               "type": "string"
@@ -255,6 +376,7 @@
         }
       }
     }
+
   },
   "components": {
     "schemas": {
@@ -296,6 +418,44 @@
           }
         }
       },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error message": {
+            "type": "string",
+            "example": "Invalid input"
+          },
+          "error in user creation": {
+            "type": "string",
+            "example": "Duplicate email"
+          }
+        }
+      },
+      "Tracker": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "calories": {
+            "type": "number",
+            "example": 200.53
+          },
+          "drinking": {
+            "type": "number",
+            "example": 200.53
+          },
+          "walkingHours": {
+            "type": "number",
+            "example": 200.53
+          }
+        }
+      },
       "Trackers": {
         "type": "array",
         "items": {
@@ -310,30 +470,17 @@
               "example": 1
             },
             "calories": {
-              "type": "float",
+              "type": "number",
               "example": 200.53
             },
             "drinking": {
-              "type": "float",
-              "example": 5.5
+              "type": "number",
+              "example": 200.53
             },
             "walkingHours": {
-              "type": "float",
-              "example": 6.5
+              "type": "number",
+              "example": 200.53
             }
-          }
-        }
-      },
-      "Error": {
-        "type": "object",
-        "properties": {
-          "error message": {
-            "type": "string",
-            "example": "Invalid input"
-          },
-          "error in user creation": {
-            "type": "string",
-            "example": "Duplicate email"
           }
         }
       }
