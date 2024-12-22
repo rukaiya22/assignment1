@@ -228,9 +228,9 @@
     "/api/trackers/{userId}": {
       "get": {
         "tags": [
-          "Tracker API"
+          "Basic Info API"
         ],
-        "summary": "Get all health record trackings of a user of the application",
+        "summary": "Get all tracks of very basic habit of a user of the application",
         "parameters": [
           {
             "in": "path",
@@ -269,7 +269,7 @@
     "/api/trackers/": {
       "post": {
         "tags": [
-          "Tracker API"
+          "Basic Info API"
         ],
         "summary": "Add a new tracker",
         "description": "Sending post body to create a Tracker",
@@ -309,7 +309,7 @@
       },
       "put": {
         "tags": [
-          "Tracker API"
+          "Basic Info API"
         ],
         "summary": "Update an existing tracker",
         "description": "Sending post body to update an existing Tracker",
@@ -351,7 +351,7 @@
     "/api/trackers/{trackerId}": {
       "delete": {
         "tags": [
-          "Tracker API"
+          "Basic Info API"
         ],
         "summary": "Delete a single Tracker by ID",
         "description": "Deletes a a single Tracker object based on the provided ID.",
@@ -372,6 +372,666 @@
           },
           "404": {
             "description": "Tracker not found"
+          }
+        }
+      }
+    },
+    "/api/diets/": {
+      "post": {
+        "tags": [
+          "Diet API"
+        ],
+        "summary": "Add a new diet",
+        "description": "Sending post body to create a Diet",
+        "requestBody": {
+          "description": "Sending carbohydrate protein fat to create Diet",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Diet"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "Diet is created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Diet"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Diet API"
+        ],
+        "summary": "Update an existing diet",
+        "description": "Sending post body to update an existing Diet",
+        "requestBody": {
+          "description": "Sending updated carbohydrate protein fat of a Diet",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Diet"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "Diet is updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Diet"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/diets/{dietId}": {
+      "delete": {
+        "tags": [
+          "Diet API"
+        ],
+        "summary": "Delete a single Diet by ID",
+        "description": "Deletes a a single Diet object based on the provided ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dietId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the diet to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Diet deleted successfully"
+          },
+          "404": {
+            "description": "Diet not found"
+          }
+        }
+      }
+    },
+    "/api/rests/": {
+      "post": {
+        "tags": [
+          "Relaxation (Rest) API"
+        ],
+        "summary": "Add a new rest (relaxation) item",
+        "description": "Sending post body to create a Rest (relaxation) item",
+        "requestBody": {
+          "description": "Sending sleep power_nap meditation to create Rest (relaxation) item",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Rest"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "A Rest (relaxation) item is created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rest"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Relaxation (Rest) API"
+        ],
+        "summary": "Update an existing rest (relaxation) item",
+        "description": "Sending post body to update an existing Rest (relaxation) item",
+        "requestBody": {
+          "description": "Sending updated sleep power_nap meditation of a Rest (relaxation) item",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Rest"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "A Rest (relaxation) item is updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rest"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/rests/{restId}": {
+      "delete": {
+        "tags": [
+          "Relaxation (Rest) API"
+        ],
+        "summary": "Delete a single Rest by ID",
+        "description": "Deletes a a single Rest object based on the provided ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "restId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the rest to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rest deleted successfully"
+          },
+          "404": {
+            "description": "Rest not found"
+          }
+        }
+      }
+    },
+    "/api/exercises/": {
+      "post": {
+        "tags": [
+          "Exercise API"
+        ],
+        "summary": "Add a new exercise",
+        "description": "Sending post body to create a Exercise",
+        "requestBody": {
+          "description": "Sending running swimming cycling equipment_based to create Exercise",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Exercise"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "Exercise is created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Exercise"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Exercise API"
+        ],
+        "summary": "Update an existing exercise",
+        "description": "Sending post body to update an existing Exercise",
+        "requestBody": {
+          "description": "Sending updated running swimming cycling equipment_based of a Exercise",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Exercise"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "Exercise is updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Exercise"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/exercises/{exerciseId}": {
+      "delete": {
+        "tags": [
+          "Exercise API"
+        ],
+        "summary": "Delete a single Exercise by ID",
+        "description": "Deletes a a single Exercise object based on the provided ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "exerciseId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the exercise to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exercise deleted successfully"
+          },
+          "404": {
+            "description": "Exercise not found"
+          }
+        }
+      }
+    },
+    "/api/biometrics/": {
+      "post": {
+        "tags": [
+          "Biometric API"
+        ],
+        "summary": "Add a new biometric",
+        "description": "Sending post body to create a Biometric",
+        "requestBody": {
+          "description": "Sending bp_systolic bp_diastolic blood_sugar cholesterol to create Biometric",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Biometric"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "Biometric is created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Biometric"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Biometric API"
+        ],
+        "summary": "Update an existing biometric",
+        "description": "Sending post body to update an existing Biometric",
+        "requestBody": {
+          "description": "Sending updated bp_systolic bp_diastolic blood_sugar cholesterol of a Biometric",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Biometric"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "Biometric is updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Biometric"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/biometrics/{biometricId}": {
+      "delete": {
+        "tags": [
+          "Biometric API"
+        ],
+        "summary": "Delete a single Biometric by ID",
+        "description": "Deletes a a single Biometric object based on the provided ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "biometricId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the biometric to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Biometric deleted successfully"
+          },
+          "404": {
+            "description": "Biometric not found"
+          }
+        }
+      }
+    },
+    "/api/supplements/": {
+      "post": {
+        "tags": [
+          "Supplement API"
+        ],
+        "summary": "Add a new supplement",
+        "description": "Sending post body to create a Supplement",
+        "requestBody": {
+          "description": "Sending vitamin_d vitamin_c iron calcium to create Supplement",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Supplement"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "Supplement is created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Supplement"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Supplement API"
+        ],
+        "summary": "Update an existing supplement",
+        "description": "Sending post body to update an existing Supplement",
+        "requestBody": {
+          "description": "Sending updated vitamin_d vitamin_c iron calcium of a Supplement",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Supplement"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "Supplement is updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Supplement"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/supplements/{supplementId}": {
+      "delete": {
+        "tags": [
+          "Supplement API"
+        ],
+        "summary": "Delete a single Supplement by ID",
+        "description": "Deletes a a single Supplement object based on the provided ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "supplementId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the supplement to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Supplement deleted successfully"
+          },
+          "404": {
+            "description": "Supplement not found"
+          }
+        }
+      }
+    },
+    "/api/sports/": {
+      "post": {
+        "tags": [
+          "Sport API"
+        ],
+        "summary": "Add a new sport",
+        "description": "Sending post body to create a Sport",
+        "requestBody": {
+          "description": "Sending sports_name playing_hours to create Sport",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Sport"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "Sport is created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sport"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Sport API"
+        ],
+        "summary": "Update an existing sport",
+        "description": "Sending post body to update an existing Sport",
+        "requestBody": {
+          "description": "Sending updated sports_name playing_hours of a Sport",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Sport"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "Sport is updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sport"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sports/{sportId}": {
+      "delete": {
+        "tags": [
+          "Sport API"
+        ],
+        "summary": "Delete a single Sport by ID",
+        "description": "Deletes a a single Sport object based on the provided ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "sportId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the sport to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sport deleted successfully"
+          },
+          "404": {
+            "description": "Sport not found"
           }
         }
       }
@@ -415,19 +1075,6 @@
               "type": "string",
               "example": "rukaiya@gmail.com"
             }
-          }
-        }
-      },
-      "Error": {
-        "type": "object",
-        "properties": {
-          "error message": {
-            "type": "string",
-            "example": "Invalid input"
-          },
-          "error in user creation": {
-            "type": "string",
-            "example": "Duplicate email"
           }
         }
       },
@@ -481,6 +1128,353 @@
               "type": "number",
               "example": 200.53
             }
+          }
+        }
+      },
+      "Diet": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "carbohydrate": {
+            "type": "number",
+            "example": 200.53
+          },
+          "protein": {
+            "type": "number",
+            "example": 200.53
+          },
+          "fat": {
+            "type": "number",
+            "example": 200.53
+          }
+        }
+      },
+      "Diets": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "userId": {
+              "type": "integer",
+              "example": 1
+            },
+            "carbohydrate": {
+              "type": "number",
+              "example": 200.53
+            },
+            "protein": {
+              "type": "number",
+              "example": 200.53
+            },
+            "fat": {
+              "type": "number",
+              "example": 200.53
+            }
+          }
+        }
+      },
+      "Rest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "sleep": {
+            "type": "number",
+            "example": 200.53
+          },
+          "power_nap": {
+            "type": "number",
+            "example": 200.53
+          },
+          "meditation": {
+            "type": "number",
+            "example": 200.53
+          }
+        }
+      },
+      "Rests": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "userId": {
+              "type": "integer",
+              "example": 1
+            },
+            "sleep": {
+              "type": "number",
+              "example": 200.53
+            },
+            "power_nap": {
+              "type": "number",
+              "example": 200.53
+            },
+            "meditation": {
+              "type": "number",
+              "example": 200.53
+            }
+          }
+        }
+      },
+      "Exercise": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "running": {
+            "type": "number",
+            "example": 200.53
+          },
+          "swimming": {
+            "type": "number",
+            "example": 200.53
+          },
+          "cycling": {
+            "type": "number",
+            "example": 200.53
+          },
+          "equipment_based": {
+            "type": "number",
+            "example": 200.53
+          }
+        }
+      },
+      "Exercises": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "userId": {
+              "type": "integer",
+              "example": 1
+            },
+            "running": {
+              "type": "number",
+              "example": 200.53
+            },
+            "swimming": {
+              "type": "number",
+              "example": 200.53
+            },
+            "cycling": {
+              "type": "number",
+              "example": 200.53
+            },
+            "equipment_based": {
+              "type": "number",
+              "example": 200.53
+            }
+          }
+        }
+      },
+      "Biometric": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "bp_systolic": {
+            "type": "number",
+            "example": 200.53
+          },
+          "bp_diastolic": {
+            "type": "number",
+            "example": 200.53
+          },
+          "blood_sugar": {
+            "type": "number",
+            "example": 200.53
+          },
+          "cholesterol": {
+            "type": "number",
+            "example": 200.53
+          }
+        }
+      },
+      "Biometrics": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "userId": {
+              "type": "integer",
+              "example": 1
+            },
+            "bp_systolic": {
+              "type": "number",
+              "example": 200.53
+            },
+            "bp_diastolic": {
+              "type": "number",
+              "example": 200.53
+            },
+            "blood_sugar": {
+              "type": "number",
+              "example": 200.53
+            },
+            "cholesterol": {
+              "type": "number",
+              "example": 200.53
+            }
+          }
+        }
+      },
+      "Supplement": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "vitamin_d": {
+            "type": "number",
+            "example": 200.53
+          },
+          "vitamin_c": {
+            "type": "number",
+            "example": 200.53
+          },
+          "iron": {
+            "type": "number",
+            "example": 200.53
+          },
+          "calcium": {
+            "type": "number",
+            "example": 200.53
+          }
+        }
+      },
+      "Supplements": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "userId": {
+              "type": "integer",
+              "example": 1
+            },
+            "vitamin_d": {
+              "type": "number",
+              "example": 200.53
+            },
+            "vitamin_c": {
+              "type": "number",
+              "example": 200.53
+            },
+            "iron": {
+              "type": "number",
+              "example": 200.53
+            },
+            "calcium": {
+              "type": "number",
+              "example": 200.53
+            }
+          }
+        }
+      },
+      "Sport": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "sports_name": {
+            "type": "string",
+            "example": "hurling"
+          },
+          "playing_hours": {
+            "type": "number",
+            "example": 200.53
+          }
+        }
+      },
+      "Sports": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "userId": {
+              "type": "integer",
+              "example": 1
+            },
+            "sports_name": {
+              "type": "string",
+              "example": "hurling"
+            },
+            "playing_hours": {
+              "type": "number",
+              "example": 200.53
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error message": {
+            "type": "string",
+            "example": "Invalid input"
+          },
+          "error in user creation": {
+            "type": "string",
+            "example": "Duplicate email"
           }
         }
       }
