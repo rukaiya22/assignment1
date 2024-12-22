@@ -8,6 +8,7 @@ import ie.setu.controllers.RestController
 import ie.setu.controllers.BiometricController
 import ie.setu.controllers.SupplementController
 import ie.setu.controllers.SportController
+import ie.setu.controllers.AppointmentController
 import ie.setu.domain.User
 import ie.setu.domain.Tracker
 import ie.setu.domain.Diet
@@ -16,6 +17,7 @@ import ie.setu.domain.Rest
 import ie.setu.domain.Biometric
 import ie.setu.domain.Supplement
 import ie.setu.domain.Sport
+import ie.setu.domain.Appointment
 import io.javalin.Javalin
 import io.javalin.vue.VueComponent
 import java.nio.file.Files
@@ -30,6 +32,7 @@ class JavalinConfig {
     val biometricController = BiometricController()
     val supplementController = SupplementController()
     val sportController = SportController()
+    val appointmentController = AppointmentController()
 
     fun startJavalinService(): Javalin {
 
@@ -339,7 +342,7 @@ class JavalinConfig {
         }
 
         // ############ API for sports feature #######################
-//getting sport by users
+        //getting sport by users
         app.get("api/sports/{user-id}") { ctx ->
             val userId = ctx.pathParamAsClass<Int>("user-id", Int::class.java).get()
             val sports = sportController.getSportsByUserId(userId)
@@ -377,6 +380,44 @@ class JavalinConfig {
         }
 
 
+        // ############ API for appointments feature #######################
+        //getting appointment by users
+        app.get("api/appointments/{user-id}") { ctx ->
+            val userId = ctx.pathParamAsClass<Int>("user-id", Int::class.java).get()
+            val appointments = appointmentController.getAppointmentsByUserId(userId)
+            if(appointments.size == 0) {
+                ctx.status(404)
+            }else{
+                ctx.json(appointments)
+                ctx.status(200)
+            }
+
+        }
+
+        //adding a appointment
+        app.post("api/appointments") { ctx ->
+            val appointment = ctx.bodyAsClass(Appointment::class.java)
+            ctx.json(appointmentController.createAppointment(appointment))
+        }
+
+        //updating a appointment
+        app.put("api/appointments") { ctx ->
+            val appointment = ctx.bodyAsClass(Appointment::class.java)
+            if(appointmentController.updateAppointment(appointment)!= null){
+                ctx.json(appointment)
+                ctx.status(201)
+            }else{
+                ctx.result("User creation failed")
+                ctx.status(400)
+            }
+        }
+
+        //delete a appointment
+        app.delete("api/appointments/{appointment-id}") { ctx ->
+            val appointmentId = ctx.pathParamAsClass<Int>("appointment-id", Int::class.java).get()
+            ctx.status(appointmentController.deletedAppointment(appointmentId))
+        }
+
 
 
 
@@ -398,6 +439,7 @@ class JavalinConfig {
         app.get("/biometrics", VueComponent("<biometrics></biometrics>"))
         app.get("/supplements", VueComponent("<supplements></supplements>"))
         app.get("/sports", VueComponent("<sports></sports>"))
+        app.get("/appointments", VueComponent("<appointments></appointments>"))
 
 
 

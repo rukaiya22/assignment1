@@ -146,6 +146,23 @@ object DatabaseHelper {
                 """
             )
 
+            // Create the `appointments` table
+            exec(
+                """
+                CREATE TABLE appointments (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER NOT NULL,
+                appointment_type VARCHAR (100) NOT NULL,
+                appointment_date DATETIME NOT NULL,
+            
+                CONSTRAINT fk_appointment_user_id
+                FOREIGN KEY (user_id)
+                REFERENCES users(id)
+                ON DELETE CASCADE
+                );
+                """
+            )
+
             // Insert test data into `users` table
             exec(
                 """
@@ -253,6 +270,21 @@ object DatabaseHelper {
                 """
             )
 
+            // Insert test data into `appointments` table
+            exec(
+                """
+                INSERT INTO appointments VALUES
+                (1, 1, 'nutritionist', '2024-12-25'),
+                (2, 1, 'physiotherapist', '2024-12-28'),
+                (3, 1, 'gym instructor', '2024-12-30'),
+                (4, 2, 'nutritionist', '2025-01-10'),
+                (5, 2, 'gym instructor', '2024-12-25'),
+                (6, 2, 'nutritionist', '2024-12-24'),
+                (7, 2, 'gym instructor', '2024-11-25');
+                """
+            )
+
+
         }
     }
 
@@ -265,6 +297,7 @@ object DatabaseHelper {
             exec("DROP TABLE IF EXISTS biometrics;")
             exec("DROP TABLE IF EXISTS supplements;")
             exec("DROP TABLE IF EXISTS sports;")
+            exec("DROP TABLE IF EXISTS appointments;")
             exec("DROP TABLE IF EXISTS users;")
         }
     }

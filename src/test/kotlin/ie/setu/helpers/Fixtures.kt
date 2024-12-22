@@ -8,6 +8,8 @@ import ie.setu.domain.Rest
 import ie.setu.domain.Biometric
 import ie.setu.domain.Supplement
 import ie.setu.domain.Sport
+import ie.setu.domain.Appointment
+import java.time.LocalDate
 
 val nonExistingEmail = "112233445566778testUser@xxxxx.xx"
 val validName = "Test User 1"
@@ -138,3 +140,20 @@ val sports = arrayListOf<Sport>(
     Sport(userId = 4, sports_name = "cricket", playing_hours = 6.5, id = 10),
 
 )
+
+val appointments = arrayListOf<Appointment>(
+    Appointment(userId = 1, appointment_type = "nutritionist", appointment_date = LocalDate.now(), id = 1),
+    Appointment(userId = 1, appointment_type = "physiotherapist", appointment_date = LocalDate.now(), id = 2),
+    Appointment(userId = 1, appointment_type = "nutritionist", appointment_date = LocalDate.now(), id = 3),
+    Appointment(userId = 1, appointment_type = "physiotherapist", appointment_date = LocalDate.now(), id = 4),
+
+    Appointment(userId = 2, appointment_type = "physiotherapist", appointment_date = LocalDate.now(), id = 5),
+    Appointment(userId = 2, appointment_type = "nutritionist", appointment_date = LocalDate.now(), id = 6),
+
+    Appointment(userId = 3, appointment_type = "nutritionist", appointment_date = LocalDate.now(), id = 7),
+    Appointment(userId = 3, appointment_type = "physiotherapist", appointment_date = LocalDate.now(), id = 8),
+
+    Appointment(userId = 4, appointment_type = "physiotherapist", appointment_date = LocalDate.now(), id = 9),
+    Appointment(userId = 4, appointment_type = "physiotherapist", appointment_date = LocalDate.now(), id = 10),
+
+    )

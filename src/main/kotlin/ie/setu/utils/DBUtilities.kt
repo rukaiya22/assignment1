@@ -16,6 +16,8 @@ import ie.setu.domain.Supplement
 import ie.setu.domain.db.Supplements
 import ie.setu.domain.Sport
 import ie.setu.domain.db.Sports
+import ie.setu.domain.Appointment
+import ie.setu.domain.db.Appointments
 
 import org.jetbrains.exposed.sql.ResultRow
 
@@ -81,6 +83,13 @@ fun mapToSport(it: ResultRow) = Sport(
     userId = it[Sports.userId],
     sports_name = it[Sports.sports_name],
     playing_hours = it[Sports.playing_hours]
+)
+
+fun mapToAppointment(it: ResultRow) = Appointment(
+    id = it[Appointments.id],
+    userId = it[Appointments.userId],
+    appointment_type = it[Appointments.appointment_type],
+    appointment_date = it[Appointments.appointment_date]
 )
 
 

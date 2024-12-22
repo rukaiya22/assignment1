@@ -1,5 +1,6 @@
 package ie.setu.controllers
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import ie.setu.config.DbConfig
@@ -10,6 +11,7 @@ import ie.setu.domain.Rest
 import ie.setu.domain.Biometric
 import ie.setu.domain.Supplement
 import ie.setu.domain.Sport
+import ie.setu.domain.Appointment
 import ie.setu.domain.User
 import ie.setu.helpers.DatabaseHelper
 import ie.setu.helpers.ServerContainer
@@ -20,6 +22,7 @@ import kong.unirest.core.JsonNode
 import ie.setu.helpers.validEmail
 import ie.setu.helpers.validName
 import org.junit.jupiter.api.*
+import java.time.LocalDate
 import kotlin.test.assertNotEquals
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -652,10 +655,83 @@ class HealthTrackerControllerTest {
     }
 
 
+    @Nested
+    inner class AppointmentAPI{
+
+        @Test
+        fun `get a appointments by  using a userId that exists in the database returns 200 `() {
+            val response = Unirest.get(origin + "/api/appointments/1").asString()
+            assertEquals(200, response.status)
+
+        }
+
+        @Test
+        fun `get appointments by user id when user does not exist returns empty value appointments and 404 response`() {
+
+            //Arrange - test data for user id
+            val id = Integer.MIN_VALUE
+
+            // Act - attempt to retrieve the non-existent user from the database
+            val retrieveResponse = Unirest.get(origin + "/api/appointments/${id}").asString()
+
+            // Assert -  verify return code
+            assertEquals(404, retrieveResponse.status)
+        }
+
+        //helper function to add a test appointment to the database
+        private fun addAppointment (userId: Int, appointment_type: String, appointment_date: String): HttpResponse<JsonNode> {
+            return Unirest.post(origin + "/api/appointments")
+                .body("{\"userId\":$userId, \"appointment_type\":\"$appointment_type\", \"appointment_date\":\"$appointment_date\"}")
+                .asJson()
+        }
+
+        //helper function to update a test appointment to the database
+        private fun updateAppointment (id: Int, userId: Int, appointment_type: String, appointment_date: String): HttpResponse<JsonNode> {
+            return Unirest.put(origin + "/api/appointments")
+                .body("{\"id\":$id, \"userId\":$userId, \"appointment_type\":\"$appointment_type\", \"appointment_date\":\"$appointment_date\"}")
+                .asJson()
+        }
+
+        //helper function to delete a appointment user from the database
+        private fun deleteAppointment (id: Int): HttpResponse<String> {
+            return Unirest.delete(origin + "/api/appointments/$id").asString()
+        }
+
+
+        @Test
+        fun `adding and deleting a appointment for an existing user`() {
+            var total_appointments = Unirest.get(origin + "/api/appointments/1").asJson().body.array.length()
+            deleteAppointment(1)
+            var total_appointments_after_delete = Unirest.get(origin + "/api/appointments/1").asJson().body.array.length()
+            assertEquals(total_appointments-1, total_appointments_after_delete)
+            addAppointment(1, "gym instructor", "2025-01-01")
+            var total_appointments_after_add = Unirest.get(origin + "/api/appointments/1").asJson().body.array.length()
+            assertEquals(total_appointments, total_appointments_after_add)
+        }
+
+        @Test
+        fun `adding and updating a appointment for an existing user`() {
+            val userId = 1
+            val appointments : ArrayList<Appointment> = jsonToObject( Unirest.get(origin + "/api/appointments/$userId").asString().body.toString())
+            val appointment = appointments[0]
+            val id = appointment.id
+            val oldappointment_type = appointment.appointment_type
+            val newAppointment_type = "gym instructor"
+            updateAppointment(id, appointment_type = newAppointment_type, appointment_date = "2026-01-01", userId = userId)
+            val newAppointments : ArrayList<Appointment> = jsonToObject( Unirest.get(origin + "/api/appointments/$userId").asString().body.toString())
+            assertEquals(newAppointments[0].appointment_type, newAppointment_type)
+            assertNotEquals(newAppointments[0].appointment_type,oldappointment_type)
+        }
+
+
+    }
+
+
 
     // Generic function to convert JSON string to an object
     inline fun <reified T> jsonToObject(json: String): T {
         val mapper = jacksonObjectMapper()
+        mapper.registerModule(JavaTimeModule())
         return mapper.readValue(json)
     }
 
