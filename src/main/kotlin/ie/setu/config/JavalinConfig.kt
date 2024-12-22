@@ -439,6 +439,7 @@ class JavalinConfig {
         app.get("/biometrics", VueComponent("<biometrics></biometrics>"))
         app.get("/supplements", VueComponent("<supplements></supplements>"))
         app.get("/sports", VueComponent("<sports></sports>"))
+        app.get("/appointments", VueComponent("<appointments></appointments>"))
 
 
 

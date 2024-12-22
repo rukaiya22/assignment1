@@ -36,6 +36,9 @@
             <li class="nav-item">
               <a class="nav-link" href="/sports/">Sports</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/appointments/">Appointments</a>
+            </li>
           </ul>
         </div>
       </nav>
@@ -82,5 +85,10 @@ app.component("app-layout", {template: "#app-layout"});
   font: italic 14px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
 
 }
+
+.nav-item{
+  font-weight: bold;
+}
+
 </style>
 
