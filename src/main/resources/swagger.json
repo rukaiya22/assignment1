@@ -18,8 +18,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Users",
-                  "type": "array"
+                  "$ref": "#/components/schemas/Users"
                 }
               }
             }
@@ -376,6 +375,47 @@
         }
       }
     },
+    "/api/diets/{userId}": {
+      "get": {
+        "tags": [
+          "Diet API"
+        ],
+        "summary": "Get all tracks diets of a user of the application",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the user to fetch diets."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve all diets of a user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Diets"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/diets/": {
       "post": {
         "tags": [
@@ -482,6 +522,47 @@
           },
           "404": {
             "description": "Diet not found"
+          }
+        }
+      }
+    },
+    "/api/rests/{userId}": {
+      "get": {
+        "tags": [
+          "Rest API"
+        ],
+        "summary": "Get all tracks rests (relaxation items, e.g., sleep, power nap, meditaion etc.) of a user of the application",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the user to fetch rests (relaxation items)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve all rests (relaxation items) of a user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rests"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -596,6 +677,47 @@
         }
       }
     },
+    "/api/exercises/{userId}": {
+      "get": {
+        "tags": [
+          "Exercise API"
+        ],
+        "summary": "Get all tracks exercises of a user of the application",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the user to fetch exercises."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve all exercises of a user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Exercises"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/exercises/": {
       "post": {
         "tags": [
@@ -702,6 +824,47 @@
           },
           "404": {
             "description": "Exercise not found"
+          }
+        }
+      }
+    },
+    "/api/biometrics/{userId}": {
+      "get": {
+        "tags": [
+          "Biometric API"
+        ],
+        "summary": "Get all tracks biometrics of a user of the application",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the user to fetch biometrics."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve all biometrics of a user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Biometrics"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -816,6 +979,47 @@
         }
       }
     },
+    "/api/supplements/{userId}": {
+      "get": {
+        "tags": [
+          "Supplement API"
+        ],
+        "summary": "Get all tracks supplements of a user of the application",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the user to fetch supplements."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve all supplements of a user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Supplements"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/supplements/": {
       "post": {
         "tags": [
@@ -922,6 +1126,47 @@
           },
           "404": {
             "description": "Supplement not found"
+          }
+        }
+      }
+    },
+    "/api/sports/{userId}": {
+      "get": {
+        "tags": [
+          "Sport API"
+        ],
+        "summary": "Get all tracks sports of a user of the application",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the user to fetch sports."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve all sports of a user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sports"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
