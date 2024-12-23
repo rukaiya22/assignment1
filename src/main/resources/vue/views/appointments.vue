@@ -199,7 +199,6 @@ app.component("appointments", {
       date_month = date_fields[1].length == 1? '0'+date_fields[1]: date_fields[1];
       date_day = date_fields[2].length == 1? '0'+date_fields[2]: date_fields[2];
       this.appointment_date = date_year+'-'+date_month+'-'+date_day;
-      alert(this.appointment_date)
     },
     selectInsertMode: function () {
       this.appointment_type = null;
