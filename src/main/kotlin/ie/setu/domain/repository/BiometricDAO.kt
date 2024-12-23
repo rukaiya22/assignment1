@@ -20,6 +20,10 @@ class BiometricDAO {
         return biometricList
     }
 
+    /**
+     * Adds a [biometric] to the Biometrics table.
+     * @return the id of the biometric following the add.
+     */
     fun save(biometric: Biometric) {
         transaction {
             Biometrics.insert {
@@ -43,12 +47,20 @@ class BiometricDAO {
         }
     }
 
+    /**
+     * Delete a biometric with [id] from the Biometrics table.
+     * @return nothing.
+     */
     fun delete(id: Int) {
         transaction {
             Biometrics.deleteWhere { Biometrics.id eq id }
         }
     }
 
+    /**
+     * Finds a biometrics with [userId] from the Biometrics table.
+     * @return the biometrics having the id.
+     */
     fun findByUserId(userId: Int): ArrayList<Biometric>{
         val biometricList: ArrayList<Biometric> = arrayListOf()
         transaction {

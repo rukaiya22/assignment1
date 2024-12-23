@@ -20,6 +20,10 @@ class AppointmentDAO {
         return appointmentList
     }
 
+    /**
+     * Adds a [appointment] to the Appointments table.
+     * @return the id of the appointment following the add.
+     */
     fun save(appointment: Appointment) {
         transaction {
             Appointments.insert {
@@ -39,12 +43,20 @@ class AppointmentDAO {
         }
     }
 
+    /**
+     * Delete a appointment with [id] from the Appointments table.
+     * @return nothing.
+     */
     fun delete(id: Int) {
         transaction {
             Appointments.deleteWhere { Appointments.id eq id }
         }
     }
 
+    /**
+     * Finds an appointments with [userId] from the Appointments table.
+     * @return the appointments having the id.
+     */
     fun findByUserId(userId: Int): ArrayList<Appointment>{
         val appointmentList: ArrayList<Appointment> = arrayListOf()
         transaction {

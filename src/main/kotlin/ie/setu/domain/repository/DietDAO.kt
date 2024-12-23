@@ -20,6 +20,10 @@ class DietDAO {
         return dietList
     }
 
+    /**
+     * Adds a [diet] to the Diets table.
+     * @return the id of the diet following the add.
+     */
     fun save(diet: Diet) {
         transaction {
             Diets.insert {
@@ -41,11 +45,20 @@ class DietDAO {
         }
     }
 
+    /**
+     * Delete a diet with [id] from the Diets table.
+     * @return nothing.
+     */
     fun delete(id: Int) {
         transaction {
             Diets.deleteWhere { Diets.id eq id }
         }
     }
+
+    /**
+     * Finds a diets with [userId] from the Diets table.
+     * @return the diets having the id.
+     */
 
     fun findByUserId(userId: Int): ArrayList<Diet>{
         val dietList: ArrayList<Diet> = arrayListOf()

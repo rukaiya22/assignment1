@@ -20,6 +20,10 @@ class RestDAO {
         return restList
     }
 
+    /**
+     * Adds a [rest] to the Rests table.
+     * @return the id of the rest following the add.
+     */
     fun save(rest: Rest) {
         transaction {
             Rests.insert {
@@ -41,12 +45,20 @@ class RestDAO {
         }
     }
 
+    /**
+     * Delete a rest with [id] from the Rests table.
+     * @return nothing.
+     */
     fun delete(id: Int) {
         transaction {
             Rests.deleteWhere { Rests.id eq id }
         }
     }
 
+    /**
+     * Finds a rests with [userId] from the Rests table.
+     * @return the rests having the id.
+     */
     fun findByUserId(userId: Int): ArrayList<Rest>{
         val restList: ArrayList<Rest> = arrayListOf()
         transaction {

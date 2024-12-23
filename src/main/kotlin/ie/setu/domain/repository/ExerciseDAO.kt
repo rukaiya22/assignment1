@@ -20,6 +20,10 @@ class ExerciseDAO {
         return exerciseList
     }
 
+    /**
+     * Adds a [exercise] to the Exercises table.
+     * @return the id of the exercise following the add.
+     */
     fun save(exercise: Exercise) {
         transaction {
             Exercises.insert {
@@ -43,12 +47,20 @@ class ExerciseDAO {
         }
     }
 
+    /**
+     * Delete an exercise with [id] from the Exercises table.
+     * @return nothing.
+     */
     fun delete(id: Int) {
         transaction {
             Exercises.deleteWhere { Exercises.id eq id }
         }
     }
 
+    /**
+     * Adds a [userId] to the Exercises table.
+     * @return the id of the exercise following the add.
+     */
     fun findByUserId(userId: Int): ArrayList<Exercise>{
         val exerciseList: ArrayList<Exercise> = arrayListOf()
         transaction {

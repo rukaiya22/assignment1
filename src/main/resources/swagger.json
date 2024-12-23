@@ -1280,6 +1280,157 @@
           }
         }
       }
+    },
+    "/api/appointments/{userId}": {
+      "get": {
+        "tags": [
+          "Appointment API"
+        ],
+        "summary": "Get all tracks appointments of a user of the application",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the user to fetch appointments."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve all appointments of a user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointments"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No data found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/appointments/": {
+      "post": {
+        "tags": [
+          "Appointment API"
+        ],
+        "summary": "Add a new appointment",
+        "description": "Sending post body to create a Appointment",
+        "requestBody": {
+          "description": "Sending appointment_type appointment_date to create Appointment",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Appointment"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "Appointment is created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Appointment API"
+        ],
+        "summary": "Update an existing appointment",
+        "description": "Sending post body to update an existing Appointment",
+        "requestBody": {
+          "description": "Sending updated appointment_type appointment_date of a Appointment",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Appointment"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "Appointment is updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/appointments/{appointmentId}": {
+      "delete": {
+        "tags": [
+          "Appointment API"
+        ],
+        "summary": "Delete a single Appointment by ID",
+        "description": "Deletes a a single Appointment object based on the provided ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "appointmentId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the appointment to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Appointment deleted successfully"
+          },
+          "404": {
+            "description": "Appointment not found"
+          }
+        }
+      }
     }
 
   },
@@ -1706,6 +1857,51 @@
             "playing_hours": {
               "type": "number",
               "example": 200.53
+            }
+          }
+        }
+      },
+      "Appointment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "appointment_type": {
+            "type": "string",
+            "example": "nutritionist"
+          },
+          "appointment_date": {
+            "type": "string",
+            "example": "2024-01-01"
+          }
+        }
+      },
+      "Appointments": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "example": 1
+            },
+            "userId": {
+              "type": "integer",
+              "example": 1
+            },
+            "appointment_type": {
+              "type": "string",
+              "example": "nutritionist"
+            },
+            "appointment_date": {
+              "type": "string",
+              "example": "2024-01-01"
             }
           }
         }

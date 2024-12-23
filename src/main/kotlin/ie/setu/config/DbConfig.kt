@@ -27,17 +27,17 @@ class DbConfig {
             // Configuration for production database
             println("=========== Running in production mode ================")
 
-//            val PGHOST = "localhost"
-//            val PGPORT = "5432"
-//            val PGUSER = "postgres"
-//            val PGPASSWORD = "postgres"
-//            val PGDATABASE = "postgres"
-
-            val PGHOST = "dpg-ctk2pabqf0us739evs9g-a.frankfurt-postgres.render.com"
+            val PGHOST = "localhost"
             val PGPORT = "5432"
-            val PGUSER = "rukaiya"
-            val PGPASSWORD = "yODkQtfzazpZVyIeT3pCsLLmrRXJxbzt"
-            val PGDATABASE = "health_tracker_65kl"
+            val PGUSER = "postgres"
+            val PGPASSWORD = "postgres"
+            val PGDATABASE = "postgres"
+
+//            val PGHOST = "dpg-ctk2pabqf0us739evs9g-a.frankfurt-postgres.render.com"
+//            val PGPORT = "5432"
+//            val PGUSER = "rukaiya"
+//            val PGPASSWORD = "yODkQtfzazpZVyIeT3pCsLLmrRXJxbzt"
+//            val PGDATABASE = "health_tracker_65kl"
 
             dbUrl = "jdbc:postgresql://$PGHOST:$PGPORT/$PGDATABASE"
             dbDriver = "org.postgresql.Driver"

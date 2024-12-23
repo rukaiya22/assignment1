@@ -66,6 +66,11 @@ app.component("users", {
         alert("Email cannot be black");
         return false;
       }
+      const regex_valid_email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if(!regex_valid_email.test(this.email)) {
+        alert("Please correct the email format");
+        return false;
+      }
       return true;
     },
     addUser: function () {
